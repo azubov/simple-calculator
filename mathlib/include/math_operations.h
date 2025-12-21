@@ -7,4 +7,6 @@ namespace Mathlib {
     int64_t sub(int64_t a, int64_t b);
     int64_t mul(int64_t a, int64_t b);
     int64_t div(int64_t a, int64_t b);
+    int64_t pow(int64_t a, int64_t b);
+    int64_t factorial(int64_t n);
 }
