@@ -40,19 +40,18 @@ int main(int argc, char *argv[]) {
     std::string op = argv[2];
     int64_t b = 0;
 
-    if (op != "!") {
+    if (op == "!") {
+        if (argc != 3) {
+            std::cerr << "Factorial requires exactly one argument.\n";
+            return 1;
+        }
+    } else {
         if (argc != 4) {
             std::cerr << "Binary operations require two arguments.\n";
             return 1;
         }
         b = std::stoll(argv[3]);
-    } else {
-        if (argc != 3) {
-            std::cerr << "Factorial requires exactly one argument.\n";
-            return 1;
-        }
     }
-
 
     try {
         if (op == "+") {
