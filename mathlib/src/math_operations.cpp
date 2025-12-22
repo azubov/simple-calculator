@@ -1,5 +1,6 @@
 #include "math_operations.h"
 
+#include <cstdint>
 #include <limits>
 #include <stdexcept>
 

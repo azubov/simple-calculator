@@ -20,6 +20,7 @@ add_link_options(
         -fno-omit-frame-pointer
 )
 
+include(CTest)
 add_subdirectory(mathlib)
 
 add_executable(calc src/main.cpp)
