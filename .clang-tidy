@@ -1,0 +1,95 @@
+Checks: |
+  clang-diagnostic-*,
+  clang-analyzer-*,
+  -clang-analyzer-alpha*,
+  google-*,
+  readability-*,
+  performance-*,
+  modernize-*,
+  -modernize-avoid-c-arrays,
+  -modernize-use-trailing-return-type,
+  -modernize-use-nodiscard,
+
+CheckOptions:
+  # --- Google readability tweaks ---
+  - key:             google-readability-braces-around-statements.ShortStatementLines
+    value:           '1'
+  - key:             google-readability-function-size.StatementThreshold
+    value:           '800'
+  - key:             google-readability-namespace-comments.ShortNamespaceLines
+    value:           '10'
+  - key:             google-readability-namespace-comments.SpacesBeforeComments
+    value:           '2'
+
+  # --- Identifier naming rules (Google style) ---
+  # Namespaces: lower_case
+  - key:             readability-identifier-naming.NamespaceCase
+    value:           lower_case
+
+  # Functions and methods: lower_case
+  - key:             readability-identifier-naming.FunctionCase
+    value:           lower_case
+  - key:             readability-identifier-naming.FunctionMethodCase
+    value:           lower_case
+  - key:             readability-identifier-naming.FunctionStaticMethodCase
+    value:           lower_case
+
+  # Variables
+  - key:             readability-identifier-naming.VariableCase
+    value:           lower_case
+  - key:             readability-identifier-naming.VariableGlobalCase
+    value:           lower_case
+  - key:             readability-identifier-naming.VariableGlobalPrefix
+    value:           g_
+  - key:             readability-identifier-naming.VariableStaticCase
+    value:           lower_case
+  - key:             readability-identifier-naming.VariableMemberCase
+    value:           lower_case
+  - key:             readability-identifier-naming.ParameterMinLength
+    value:           '1'
+
+  # Function parameters
+  - key:             readability-identifier-naming.ParameterCase
+    value:           lower_case
+
+  # Types (classes, structs, enums, typedefs, template parameters): CamelCase
+  - key:             readability-identifier-naming.ClassCase
+    value:           CamelCase
+  - key:             readability-identifier-naming.StructCase
+    value:           CamelCase
+  - key:             readability-identifier-naming.EnumCase
+    value:           CamelCase
+  - key:             readability-identifier-naming.TypeAliasCase
+    value:           CamelCase
+  - key:             readability-identifier-naming.TemplateParameterCase
+    value:           CamelCase
+
+  # Enum constants and constant variables: kConstantName
+  - key:             readability-identifier-naming.EnumConstantCase
+    value:           CamelCase
+  - key:             readability-identifier-naming.ConstantCase
+    value:           CamelCase
+  - key:             readability-identifier-naming.ConstantPrefix
+    value:           k
+
+  # Member fields: lower_case + trailing underscore
+  - key:             readability-identifier-naming.FieldCase
+    value:           lower_case
+  - key:             readability-identifier-naming.FieldSuffix
+    value:           _
+
+  # Macros: ALL_CAPS
+  - key:             readability-identifier-naming.MacroDefinitionCase
+    value:           UPPER_CASE
+
+  # Ignored patterns (tests, generated names, common extern symbols)
+  - key:             readability-identifier-naming.DefaultIgnoredRegexp
+    value:           '^_?impl_|^__.*|^__.*$'
+  - key:             readability-identifier-naming.FunctionIgnoredRegexp
+    value:           '^main$|^TEST_'
+  - key:             readability-identifier-naming.VariableIgnoredRegexp
+    value:           '^g_.*|^k[A-Z].*'
+  - key:             readability-identifier-naming.ParameterIgnoredRegexp
+    value:           '^argc$|^argv$'
+
+WarningsAsErrors: '*'

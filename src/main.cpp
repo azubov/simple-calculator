@@ -1,11 +1,11 @@
-#include "math_operations.h"
+#include "mathlib/math_operations.h"
 
 #include <cstdint>
 #include <iostream>
 #include <string>
 #include <stdexcept>
 
-void PrintHelp() {
+void print_help() {
     std::cout << "This is a simple calculator!\n"
               << "It only supports integers as arguments.\n"
               << "Usage: calc arg1 operation arg2\n"
@@ -29,7 +29,7 @@ void PrintHelp() {
 
 int main(int argc, char *argv[]) {
     if (argc == 2 && std::string(argv[1]) == "--help") {
-        PrintHelp();
+        print_help();
         return 0;
     }
     if (argc < 3) {
@@ -37,11 +37,11 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    int64_t a = std::stoll(argv[1]);
-    std::string op = argv[2];
-    int64_t b = 0;
+    std::int64_t lhs = std::stoll(argv[1]);
+    std::string operation = argv[2];
+    std::int64_t rhs = 0;
 
-    if (op == "!") {
+    if (operation == "!") {
         if (argc != 3) {
             std::cerr << "Factorial requires exactly one argument.\n";
             return 1;
@@ -51,22 +51,22 @@ int main(int argc, char *argv[]) {
             std::cerr << "Binary operations require two arguments.\n";
             return 1;
         }
-        b = std::stoll(argv[3]);
+        rhs = std::stoll(argv[3]);
     }
 
     try {
-        if (op == "+") {
-            std::cout << Mathlib::add(a, b) << "\n";
-        } else if (op == "-") {
-            std::cout << Mathlib::sub(a, b) << "\n";
-        } else if (op == "*") {
-            std::cout << Mathlib::mul(a, b) << "\n";
-        } else if (op == "/") {
-            std::cout << Mathlib::div(a, b) << "\n";
-        } else if (op == "^") {
-            std::cout << Mathlib::pow(a, b) << "\n";
-        } else if (op == "!") {
-            std::cout << Mathlib::factorial(a) << "\n";
+        if (operation == "+") {
+            std::cout << mathlib::add(lhs, rhs) << "\n";
+        } else if (operation == "-") {
+            std::cout << mathlib::subtract(lhs, rhs) << "\n";
+        } else if (operation == "*") {
+            std::cout << mathlib::multiply(lhs, rhs) << "\n";
+        } else if (operation == "/") {
+            std::cout << mathlib::divide(lhs, rhs) << "\n";
+        } else if (operation == "^") {
+            std::cout << mathlib::power(lhs, rhs) << "\n";
+        } else if (operation == "!") {
+            std::cout << mathlib::factorial(lhs) << "\n";
         } else {
             std::cerr << "Unsupported operation" << "\n";
             return 1;
