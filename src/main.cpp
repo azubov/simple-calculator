@@ -27,53 +27,75 @@ void print_help() {
               << "calc 4 ! -> 24\n";
 }
 
-int main(int argc, char *argv[]) {
+struct OperationData {
+    std::int64_t first{};
+    std::int64_t second{};
+    std::string_view operation;
+    std::string result;
+};
+
+OperationData parse(int argc, char *argv[]) {
     if (argc == 2 && std::string(argv[1]) == "--help") {
         print_help();
-        return 0;
+        std::exit(0);
     }
     if (argc < 3) {
-        std::cerr << "Invalid arguments. Use --help for usage.\n";
-        return 1;
+        throw std::invalid_argument("Invalid arguments. Run with --help for usage.");
     }
 
-    std::int64_t lhs = std::stoll(argv[1]);
-    std::string operation = argv[2];
-    std::int64_t rhs = 0;
+    OperationData data;
+    data.first = std::stoll(argv[1]);
+    data.operation = argv[2];
 
-    if (operation == "!") {
+    if (data.operation == "!") {
         if (argc != 3) {
-            std::cerr << "Factorial requires exactly one argument.\n";
-            return 1;
+            throw std::invalid_argument("Factorial requires exactly one argument.");
         }
     } else {
         if (argc != 4) {
-            std::cerr << "Binary operations require two arguments.\n";
-            return 1;
+            throw std::invalid_argument("Binary operations require two arguments.");
         }
-        rhs = std::stoll(argv[3]);
+        data.second = std::stoll(argv[3]);
     }
+    return data;
+}
 
+void validate(const OperationData &data) {
+    static constexpr std::string_view kValidOperations = "+-*/^!";
+    if (kValidOperations.find(data.operation) == std::string::npos) {
+        throw std::invalid_argument("Unsupported operation. Run with --help for usage.");
+    }
+}
+
+void calculate(OperationData &data) {
+    if (data.operation == "+") {
+        data.result = std::to_string(mathlib::add(data.first, data.second));
+    } else if (data.operation == "-") {
+        data.result = std::to_string(mathlib::subtract(data.first, data.second));
+    } else if (data.operation == "*") {
+        data.result = std::to_string(mathlib::multiply(data.first, data.second));
+    } else if (data.operation == "/") {
+        data.result = std::to_string(mathlib::divide(data.first, data.second));
+    } else if (data.operation == "^") {
+        data.result = std::to_string(mathlib::power(data.first, data.second));
+    } else if (data.operation == "!") {
+        data.result = std::to_string(mathlib::factorial(data.first));
+    }
+}
+
+void output(const OperationData &data) {
+    std::cout << data.result << "\n";
+}
+
+int main(int argc, char *argv[]) {
     try {
-        if (operation == "+") {
-            std::cout << mathlib::add(lhs, rhs) << "\n";
-        } else if (operation == "-") {
-            std::cout << mathlib::subtract(lhs, rhs) << "\n";
-        } else if (operation == "*") {
-            std::cout << mathlib::multiply(lhs, rhs) << "\n";
-        } else if (operation == "/") {
-            std::cout << mathlib::divide(lhs, rhs) << "\n";
-        } else if (operation == "^") {
-            std::cout << mathlib::power(lhs, rhs) << "\n";
-        } else if (operation == "!") {
-            std::cout << mathlib::factorial(lhs) << "\n";
-        } else {
-            std::cerr << "Unsupported operation" << "\n";
-            return 1;
-        }
+        auto data = parse(argc, argv);
+        validate(data);
+        calculate(data);
+        output(data);
     } catch (const std::exception &e) {
         std::cerr << e.what() << "\n";
+        return 1;
     }
-
     return 0;
 }
