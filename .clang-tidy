@@ -1,18 +1,22 @@
-Checks: > 
+Checks: >
   -*,
   clang-diagnostic-*,
   clang-analyzer-*,
   -clang-analyzer-alpha*,
   bugprone-*,
   -bugprone-invalid-enum-default-initialization,
-  llvm-*,
-  readability-*,
-  -readability-identifier-length,
+  -bugprone-easily-swappable-parameters,
   performance-*,
+  concurrency-*,
   modernize-*,
   -modernize-avoid-c-arrays,
   -modernize-use-trailing-return-type,
-  -modernize-use-nodiscard
+  -modernize-use-nodiscard,
+  cppcoreguidelines-*,
+  -cppcoreguidelines-avoid-c-arrays,
+  -cppcoreguidelines-pro-bounds-pointer-arithmetic,
+  readability-*,
+  -readability-identifier-length
 
 HeaderFilterRegex: '^(src|include)/'
 

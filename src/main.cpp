@@ -6,7 +6,7 @@
 #include <string>
 #include <system_error>
 
-#include "mathlib/math_operations.h"
+#include <mathlib/math_operations.h>
 
 void printHelp() {
     std::cout << "This is a simple calculator!\n"
@@ -37,20 +37,20 @@ struct OperationData {
     char operation{};
 };
 
-std::int64_t parseInt64(const char *s) {
+std::int64_t parseInt64(const char* s) {
     if (s == nullptr) {
         throw std::invalid_argument(std::string("Invalid integer: nullptr"));
     }
     std::int64_t result = 0;
-    const char *begin = s;
-    const char *end = s + std::strlen(s);
+    const char* begin = s;
+    const char* end = s + std::strlen(s);
     if (auto [ptr, ec] = std::from_chars(begin, end, result); ec != std::errc() || ptr != end) {
         throw std::invalid_argument(std::string("Invalid integer: ") + s);
     }
     return result;
 }
 
-char parseOperation(const char *s) {
+char parseOperation(const char* s) {
     if (s == nullptr) {
         throw std::invalid_argument(std::string("Invalid operation: nullptr"));
     }
@@ -60,7 +60,7 @@ char parseOperation(const char *s) {
     return s[0];
 }
 
-OperationData parse(int argc, char *argv[]) {
+OperationData parse(int argc, char* argv[]) {
     if (argc < 3) {
         throw std::invalid_argument("Invalid arguments. Run with --help for usage.");
     }
@@ -82,14 +82,14 @@ OperationData parse(int argc, char *argv[]) {
     return data;
 }
 
-void validate(const OperationData &data) {
+void validate(const OperationData& data) {
     static constexpr std::string_view valid_operations = "+-*/^!";
     if (valid_operations.find(data.operation) == std::string::npos) {
         throw std::invalid_argument("Unsupported operation. Run with --help for usage.");
     }
 }
 
-void calculate(OperationData &data) {
+void calculate(OperationData& data) {
     if (data.operation == '+') {
         data.result = mathlib::add(data.first, data.second);
     } else if (data.operation == '-') {
@@ -105,11 +105,11 @@ void calculate(OperationData &data) {
     }
 }
 
-void output(const OperationData &data) {
+void output(const OperationData& data) {
     std::cout << data.result << '\n';
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
     if (argc == 2 && std::string(argv[1]) == "--help") {
         printHelp();
         return 0;
@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) {
         validate(data);
         calculate(data);
         output(data);
-    } catch (const std::exception &e) {
+    } catch (const std::exception& e) {
         std::cerr << e.what() << '\n';
         return 1;
     }

@@ -1,7 +1,17 @@
-Language: Cpp
 BasedOnStyle: LLVM
-AccessModifierOffset: -4
+Language: Cpp
+
 ColumnLimit: 120
-IndentCaseBlocks: true
+
+AccessModifierOffset: -4
 IndentWidth: 4
-TabWidth: 4
+UseTab: Never
+
+AlignEscapedNewlines: Left
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortLambdasOnASingleLine: Empty
+AlwaysBreakTemplateDeclarations: Yes
+BreakConstructorInitializers: BeforeComma
+IndentPPDirectives: AfterHash
+PointerAlignment: Left
+NamespaceIndentation: All
