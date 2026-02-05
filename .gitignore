@@ -56,3 +56,4 @@ desktop.ini
 # Clion
 .idea
 cmake-build*
+.vscode
