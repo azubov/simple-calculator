@@ -20,7 +20,7 @@ void printHelp() {
               << "^ [exponentiation]\n"
               << "! [factorial]\n"
               << "Beware of an overflow!\n"
-              << "The result should fit into a 64‑bit integer.\n"
+              << "The result should fit into a 64-bit integer.\n"
               << "Examples:\n"
               << "calc 3 + 5 -> 8\n"
               << "calc 10 - 7 -> 3\n"
