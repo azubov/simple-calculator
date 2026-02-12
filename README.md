@@ -12,6 +12,12 @@ simple-calculator/
 ├── README.md
 └── src/
     └── main.cpp
+    └── OperationData.h
+    └── Printer.cpp
+    └── Printer.h
+└── tests/
+    └── CMakeLists.txt
+    └── Printer_test.cpp
 ```
 
 ## 🚀 Возможности
@@ -49,7 +55,7 @@ simple-calculator/
 
 ### Доступные пресеты
 
-- **debug** — сборка в режиме `Debug`, `clang-tidy`, строгие предупреждения (`-Wall -Wextra -Wpedantic -Werror`) и санитайзеры (`address`, `undefined`).
+- **debug** — сборка в режиме `Debug`, включает тесты, `clang-tidy`, строгие предупреждения (`-Wall -Wextra -Wpedantic -Werror`) и санитайзеры (`address`, `undefined`).
 - **release** — оптимизированная сборка в режиме `Release`, без тестов, с мягкими предупреждениями.
 
 ### Использование
@@ -59,6 +65,7 @@ simple-calculator/
 ```bash
 cmake --preset debug
 cmake --build --preset debug
+ctest --preset debug --output-on-failure
 ```
 
 Сборка **release** версии:

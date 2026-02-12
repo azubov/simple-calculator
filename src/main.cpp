@@ -1,41 +1,14 @@
-#include <charconv>
-#include <cstdint>
-#include <cstring>
-#include <iostream>
-#include <stdexcept>
-#include <string>
-#include <system_error>
+#include "OperationData.h"
+#include "Printer.h"
 
 #include <mathlib/math_operations.h>
 
-void printHelp() {
-    std::cout << "This is a simple calculator!\n"
-              << "It only supports integers as arguments.\n"
-              << "Usage: calc arg1 operation arg2\n"
-              << "Supported operations:\n"
-              << "+ [sum]\n"
-              << "- [subtraction]\n"
-              << "* [multiplication]\n"
-              << "/ [division]\n"
-              << "^ [exponentiation]\n"
-              << "! [factorial]\n"
-              << "Beware of an overflow!\n"
-              << "The result should fit into a 64-bit integer.\n"
-              << "Examples:\n"
-              << "calc 3 + 5 -> 8\n"
-              << "calc 10 - 7 -> 3\n"
-              << "calc 2 * 3 -> 6\n"
-              << "calc 10 / 2 -> 5\n"
-              << "calc 2 ^ 3 -> 8\n"
-              << "calc 4 ! -> 24\n";
-}
-
-struct OperationData {
-    std::int64_t first{};
-    std::int64_t second{};
-    std::int64_t result{};
-    char operation{};
-};
+#include <charconv>
+#include <cstdint>
+#include <cstring>
+#include <stdexcept>
+#include <string>
+#include <system_error>
 
 std::int64_t parseInt64(const char* s) {
     if (s == nullptr) {
@@ -105,22 +78,19 @@ void calculate(OperationData& data) {
     }
 }
 
-void output(const OperationData& data) {
-    std::cout << data.result << '\n';
-}
-
 int main(int argc, char* argv[]) {
+    Printer printer;
     if (argc == 2 && std::string(argv[1]) == "--help") {
-        printHelp();
+        printer.printHelp();
         return 0;
     }
     try {
         auto data = parse(argc, argv);
         validate(data);
         calculate(data);
-        output(data);
+        printer.printResult(data);
     } catch (const std::exception& e) {
-        std::cerr << e.what() << '\n';
+        printer.printException(e);
         return 1;
     }
     return 0;
