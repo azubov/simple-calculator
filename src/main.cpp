@@ -1,7 +1,6 @@
+#include "Calculator.h"
 #include "OperationData.h"
 #include "Printer.h"
-
-#include <mathlib/math_operations.h>
 
 #include <charconv>
 #include <cstdint>
@@ -62,23 +61,8 @@ void validate(const OperationData& data) {
     }
 }
 
-void calculate(OperationData& data) {
-    if (data.operation == '+') {
-        data.result = mathlib::add(data.first, data.second);
-    } else if (data.operation == '-') {
-        data.result = mathlib::subtract(data.first, data.second);
-    } else if (data.operation == '*') {
-        data.result = mathlib::multiply(data.first, data.second);
-    } else if (data.operation == '/') {
-        data.result = mathlib::divide(data.first, data.second);
-    } else if (data.operation == '^') {
-        data.result = mathlib::power(data.first, data.second);
-    } else if (data.operation == '!') {
-        data.result = mathlib::factorial(data.first);
-    }
-}
-
 int main(int argc, char* argv[]) {
+    Calculator caclulator;
     Printer printer;
     if (argc == 2 && std::string(argv[1]) == "--help") {
         printer.printHelp();
@@ -87,7 +71,7 @@ int main(int argc, char* argv[]) {
     try {
         auto data = parse(argc, argv);
         validate(data);
-        calculate(data);
+        caclulator.calculate(data);
         printer.printResult(data);
     } catch (const std::exception& e) {
         printer.printException(e);

@@ -1,3 +1,4 @@
+#pragma once
 #include "OperationData.h"
 
 #include <exception>

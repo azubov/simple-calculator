@@ -14,8 +14,14 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(mathlib)
 set_target_properties(mathlib PROPERTIES CXX_CLANG_TIDY "")
 
-add_library(calc_lib src/Printer.cpp)
-target_include_directories(calc_lib PUBLIC ${CMAKE_SOURCE_DIR}/src)
+add_library(calc_lib 
+    src/Calculator.cpp
+    src/Printer.cpp
+)
+target_include_directories(calc_lib PUBLIC 
+    ${mathlib_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/src
+)
 target_link_libraries(calc_lib PUBLIC mathlib)
 
 add_executable(calc src/main.cpp)
