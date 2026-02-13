@@ -11,7 +11,7 @@ simple-calculator/
 ├── CMakePresets.json
 ├── README.md
 └── src/
-    └── main.cpp
+    └── CMakeLists.txt
     └── OperationData.h
     └── Checker.cpp
     └── Checker.h
@@ -19,6 +19,7 @@ simple-calculator/
     └── Calculator.h
     └── Printer.cpp
     └── Printer.h
+    └── main.cpp
 └── tests/
     └── CMakeLists.txt
     └── Checker_test.cpp    
