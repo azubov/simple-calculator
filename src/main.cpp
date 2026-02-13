@@ -1,4 +1,5 @@
 #include "Calculator.h"
+#include "Checker.h"
 #include "OperationData.h"
 #include "Printer.h"
 
@@ -54,14 +55,8 @@ OperationData parse(int argc, char* argv[]) {
     return data;
 }
 
-void validate(const OperationData& data) {
-    static constexpr std::string_view valid_operations = "+-*/^!";
-    if (valid_operations.find(data.operation) == std::string::npos) {
-        throw std::invalid_argument("Unsupported operation. Run with --help for usage.");
-    }
-}
-
 int main(int argc, char* argv[]) {
+    Checker checker;
     Calculator caclulator;
     Printer printer;
     if (argc == 2 && std::string(argv[1]) == "--help") {
@@ -70,7 +65,7 @@ int main(int argc, char* argv[]) {
     }
     try {
         auto data = parse(argc, argv);
-        validate(data);
+        checker.validate(data);
         caclulator.calculate(data);
         printer.printResult(data);
     } catch (const std::exception& e) {

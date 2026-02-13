@@ -1,6 +1,7 @@
 find_package(GTest REQUIRED)
 
 add_executable(calc_tests
+    Checker_test.cpp 
     Calculator_test.cpp 
     Printer_test.cpp
 )

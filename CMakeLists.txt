@@ -15,6 +15,7 @@ FetchContent_MakeAvailable(mathlib)
 set_target_properties(mathlib PROPERTIES CXX_CLANG_TIDY "")
 
 add_library(calc_lib 
+    src/Checker.cpp
     src/Calculator.cpp
     src/Printer.cpp
 )

@@ -13,12 +13,15 @@ simple-calculator/
 └── src/
     └── main.cpp
     └── OperationData.h
+    └── Checker.cpp
+    └── Checker.h
     └── Calculator.cpp
     └── Calculator.h
     └── Printer.cpp
     └── Printer.h
 └── tests/
     └── CMakeLists.txt
+    └── Checker_test.cpp    
     └── Calculator_test.cpp    
     └── Printer_test.cpp
 ```
