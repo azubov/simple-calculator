@@ -13,6 +13,8 @@ simple-calculator/
 └── src/
     └── CMakeLists.txt
     └── OperationData.h
+    └── Parser.cpp
+    └── Parser.h
     └── Checker.cpp
     └── Checker.h
     └── Calculator.cpp
@@ -22,9 +24,12 @@ simple-calculator/
     └── main.cpp
 └── tests/
     └── CMakeLists.txt
-    └── Checker_test.cpp    
-    └── Calculator_test.cpp    
-    └── Printer_test.cpp
+    └── parser_tests.cpp
+    └── checker_tests.cpp
+    └── calculator_tests.cpp
+    └── printer_tests.cpp
+└── example/
+    └── input.json
 ```
 
 ## 🚀 Возможности
