@@ -26,6 +26,7 @@ simple-calculator/
     └── main.cpp
 └── tests/
     └── CMakeLists.txt
+    └── runner_tests.cpp
     └── parser_tests.cpp
     └── checker_tests.cpp
     └── calculator_tests.cpp
