@@ -21,6 +21,13 @@ FetchContent_Declare(
 ) 
 FetchContent_MakeAvailable(json)
 
+FetchContent_Declare(
+    spdlog 
+    GIT_REPOSITORY https://github.com/gabime/spdlog.git 
+    GIT_TAG v1.17.0
+) 
+FetchContent_MakeAvailable(spdlog)
+
 add_subdirectory(src)
 
 add_executable(calc src/main.cpp)

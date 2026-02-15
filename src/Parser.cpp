@@ -1,8 +1,13 @@
 #include "Parser.h"
 
+#include "Logger.h"
+
 #include <nlohmann/json.hpp>
 
 OperationData Parser::parse(std::istream& input) const {
+    auto log = Logger::instance().get();
+    log->info("Staring to parse input..");
+
     nlohmann::json json;
     input >> json;
 
@@ -30,5 +35,6 @@ OperationData Parser::parse(std::istream& input) const {
         data.hasSecond = true;
     }
 
+    log->info("Input parsed successfully");
     return data;
 }

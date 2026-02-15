@@ -12,4 +12,5 @@ target_include_directories(calc_lib PUBLIC
 target_link_libraries(calc_lib PUBLIC 
     mathlib
     nlohmann_json::nlohmann_json
+    spdlog::spdlog
 )

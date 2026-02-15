@@ -1,8 +1,13 @@
 #include "Calculator.h"
 
+#include "Logger.h"
+
 #include <mathlib/math_operations.h>
 
 void Calculator::calculate(OperationData& data) const {
+    auto log = Logger::instance().get();
+    log->info("Staring to calculate..");
+
     if (data.operation == '+') {
         data.result = mathlib::add(data.first, data.second);
     } else if (data.operation == '-') {
@@ -16,4 +21,6 @@ void Calculator::calculate(OperationData& data) const {
     } else if (data.operation == '!') {
         data.result = mathlib::factorial(data.first);
     }
+
+    log->info("Calculation finished successfully");
 }

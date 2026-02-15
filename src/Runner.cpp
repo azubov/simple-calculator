@@ -2,24 +2,31 @@
 
 #include "Calculator.h"
 #include "Checker.h"
+#include "Logger.h"
 #include "Parser.h"
 #include "Printer.h"
 
 #include <iostream>
-#include <string>
+#include <string_view>
 
 int Runner::run(int argc, char* argv[]) const {
     return run(argc, argv, std::cin, std::cout);
 }
 
 int Runner::run(int argc, char* argv[], std::istream& in, std::ostream& out) const {
+    auto log = Logger::instance().get();
+    log->info("Runner started");
+
     Parser parser;
     Checker checker;
     Calculator calculator;
     Printer printer(out, out);
 
     try {
-        if (handleHelpFlag(argc, argv, printer)) {
+        if (handleHelpFlag(argc, argv)) {
+            printer.printHelp();
+
+            log->info("Runner finished successfully");
             return 0;
         }
 
@@ -28,17 +35,20 @@ int Runner::run(int argc, char* argv[], std::istream& in, std::ostream& out) con
         calculator.calculate(data);
         printer.printResult(data);
     } catch (const std::exception& e) {
+        log->error("Exception: {}", e.what());
         printer.printException(e);
+
+        log->error("Runner finished with error");
         return 1;
     }
+
+    log->info("Runner finished successfully");
     return 0;
 }
 
-bool Runner::handleHelpFlag(int argc, char* argv[], const Printer& printer) const {
+bool Runner::handleHelpFlag(int argc, char* argv[]) const {
     if (argc > 1) {
-        std::string arg = argv[1];
-        if (arg == "--help") {
-            printer.printHelp();
+        if (std::string_view(argv[1]) == "--help") {
             return true;
         }
         throw std::invalid_argument("Unknown argument. Use --help");
