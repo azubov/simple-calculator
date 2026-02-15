@@ -1,4 +1,5 @@
 add_library(calc_lib 
+    Runner.cpp
     Parser.cpp
     Checker.cpp
     Calculator.cpp
