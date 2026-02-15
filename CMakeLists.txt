@@ -14,6 +14,13 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(mathlib)
 set_target_properties(mathlib PROPERTIES CXX_CLANG_TIDY "")
 
+FetchContent_Declare(
+    json 
+    GIT_REPOSITORY https://github.com/nlohmann/json.git 
+    GIT_TAG v3.11.3 
+) 
+FetchContent_MakeAvailable(json)
+
 add_subdirectory(src)
 
 add_executable(calc src/main.cpp)
