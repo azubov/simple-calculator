@@ -9,17 +9,21 @@
 #include <string>
 
 int Runner::run(int argc, char* argv[]) const {
+    return run(argc, argv, std::cin, std::cout);
+}
+
+int Runner::run(int argc, char* argv[], std::istream& in, std::ostream& out) const {
     Parser parser;
     Checker checker;
     Calculator calculator;
-    Printer printer;
+    Printer printer(out, out);
 
     try {
         if (handleHelpFlag(argc, argv, printer)) {
             return 0;
         }
 
-        auto data = parser.parse(std::cin);
+        auto data = parser.parse(in);
         checker.validate(data);
         calculator.calculate(data);
         printer.printResult(data);
