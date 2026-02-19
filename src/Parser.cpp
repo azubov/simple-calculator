@@ -4,11 +4,14 @@
 
 #include <nlohmann/json.hpp>
 
-OperationData Parser::parse(std::istream& input) const {
+Parser::Parser(std::istream& in) noexcept
+    : in_(in) {}
+
+OperationData Parser::parse() const {
     Log::info("Staring to parse input..");
 
     nlohmann::json json;
-    input >> json;
+    in_ >> json;
 
     OperationData data;
 

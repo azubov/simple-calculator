@@ -1,42 +1,35 @@
 #include "Runner.h"
 
-#include "Calculator.h"
-#include "Checker.h"
 #include "Log.h"
-#include "Parser.h"
-#include "Printer.h"
-#include <fmt/format.h>
 
-#include <iostream>
+#include <fmt/format.h>
 #include <string_view>
 
+Runner::Runner(const Parser& parser, const Checker& checker, const Calculator& calculator,
+               const Printer& printer) noexcept
+    : parser_(parser)
+    , checker_(checker)
+    , calculator_(calculator)
+    , printer_(printer) {}
+
 int Runner::run(int argc, char* argv[]) const {
-    return run(argc, argv, std::cin, std::cout);
-}
-
-int Runner::run(int argc, char* argv[], std::istream& in, std::ostream& out) const {
     Log::info("Runner started");
-
-    Parser parser;
-    Checker checker;
-    Calculator calculator;
-    Printer printer(out, out);
 
     try {
         if (handleHelpFlag(argc, argv)) {
-            printer.printHelp();
+            printer_.printHelp();
 
             Log::info("Runner finished successfully");
             return 0;
         }
 
-        auto data = parser.parse(in);
-        checker.validate(data);
-        calculator.calculate(data);
-        printer.printResult(data);
+        auto data = parser_.parse();
+        checker_.validate(data);
+        calculator_.calculate(data);
+        printer_.printResult(data);
     } catch (const std::exception& e) {
         Log::error(fmt::format("Exception: {}", e.what()));
-        printer.printException(e);
+        printer_.printException(e);
 
         Log::error("Runner finished with error");
         return 1;
