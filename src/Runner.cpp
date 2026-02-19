@@ -2,9 +2,10 @@
 
 #include "Calculator.h"
 #include "Checker.h"
-#include "Logger.h"
+#include "Log.h"
 #include "Parser.h"
 #include "Printer.h"
+#include <fmt/format.h>
 
 #include <iostream>
 #include <string_view>
@@ -14,8 +15,7 @@ int Runner::run(int argc, char* argv[]) const {
 }
 
 int Runner::run(int argc, char* argv[], std::istream& in, std::ostream& out) const {
-    auto log = Logger::instance().get();
-    log->info("Runner started");
+    Log::info("Runner started");
 
     Parser parser;
     Checker checker;
@@ -26,7 +26,7 @@ int Runner::run(int argc, char* argv[], std::istream& in, std::ostream& out) con
         if (handleHelpFlag(argc, argv)) {
             printer.printHelp();
 
-            log->info("Runner finished successfully");
+            Log::info("Runner finished successfully");
             return 0;
         }
 
@@ -35,14 +35,14 @@ int Runner::run(int argc, char* argv[], std::istream& in, std::ostream& out) con
         calculator.calculate(data);
         printer.printResult(data);
     } catch (const std::exception& e) {
-        log->error("Exception: {}", e.what());
+        Log::error(fmt::format("Exception: {}", e.what()));
         printer.printException(e);
 
-        log->error("Runner finished with error");
+        Log::error("Runner finished with error");
         return 1;
     }
 
-    log->info("Runner finished successfully");
+    Log::info("Runner finished successfully");
     return 0;
 }
 

@@ -1,14 +1,13 @@
 #include "Printer.h"
 
-#include "Logger.h"
+#include "Log.h"
 
 Printer::Printer(std::ostream& out, std::ostream& err) noexcept
     : out_(out)
     , err_(err) {}
 
 void Printer::printHelp() const {
-    auto log = Logger::instance().get();
-    log->debug("Printing help..");
+    Log::debug("Printing help..");
 
     out_ << "This is a simple calculator!\n"
          << "It only supports integers as arguments.\n"
@@ -32,15 +31,13 @@ void Printer::printHelp() const {
 }
 
 void Printer::printResult(const OperationData& data) const {
-    auto log = Logger::instance().get();
-    log->debug("Printing result..");
+    Log::debug("Printing result..");
 
     out_ << data.result << '\n';
 }
 
 void Printer::printException(const std::exception& ex) const {
-    auto log = Logger::instance().get();
-    log->debug("Printing exception..");
+    Log::debug("Printing exception..");
 
     err_ << ex.what() << '\n';
 }
