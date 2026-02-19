@@ -2,7 +2,6 @@
 
 #include "Log.h"
 
-#include <fmt/format.h>
 #include <string_view>
 
 Runner::Runner(const Parser& parser, const Checker& checker, const Calculator& calculator,
@@ -15,25 +14,17 @@ Runner::Runner(const Parser& parser, const Checker& checker, const Calculator& c
 int Runner::run(int argc, char* argv[]) const {
     Log::info("Runner started");
 
-    try {
-        if (handleHelpFlag(argc, argv)) {
-            printer_.printHelp();
+    if (handleHelpFlag(argc, argv)) {
+        printer_.printHelp();
 
-            Log::info("Runner finished successfully");
-            return 0;
-        }
-
-        auto data = parser_.parse();
-        checker_.validate(data);
-        calculator_.calculate(data);
-        printer_.printResult(data);
-    } catch (const std::exception& e) {
-        Log::error(fmt::format("Exception: {}", e.what()));
-        printer_.printException(e);
-
-        Log::error("Runner finished with error");
-        return 1;
+        Log::info("Runner finished successfully");
+        return 0;
     }
+
+    auto data = parser_.parse();
+    checker_.validate(data);
+    calculator_.calculate(data);
+    printer_.printResult(data);
 
     Log::info("Runner finished successfully");
     return 0;

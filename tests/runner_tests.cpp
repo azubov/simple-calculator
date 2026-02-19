@@ -33,10 +33,7 @@ TEST(RunnerTests, UnknownArgumentProducesError) {
 
     char* argv[] = {(char*)"calc", (char*)"--unknown"};
 
-    int code = runner.run(2, argv);
-
-    EXPECT_EQ(code, 1);
-    EXPECT_NE(out.str().find("Unknown argument"), std::string::npos);
+    EXPECT_THROW(runner.run(2, argv), std::invalid_argument);
 }
 
 TEST(RunnerTests, SuccessfulRun) {
@@ -68,8 +65,5 @@ TEST(RunnerTests, InvalidJsonTriggersException) {
 
     char* argv[] = {(char*)"calc"};
 
-    int code = runner.run(1, argv);
-
-    EXPECT_EQ(code, 1);
-    EXPECT_NE(out.str().find("exception"), std::string::npos);
+    EXPECT_THROW(runner.run(1, argv), std::exception);
 }
