@@ -12,7 +12,10 @@ simple-calculator/
 ├── README.md
 └── src/
     └── CMakeLists.txt
-    └── Logger.h
+    └── logging/
+        └── Logger.h
+        └── SpdLogger.h
+    └── Log.h
     └── OperationData.h
     └── Runner.cpp
     └── Runner.h
