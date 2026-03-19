@@ -1,65 +1,67 @@
 {
-  "version": 3,
-  "cmakeMinimumRequired": {
-    "major": 3,
-    "minor": 15,
-    "patch": 0
-  },
-  "configurePresets": [
-    {
-      "name": "default",
-      "hidden": true,
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/${presetName}",
-      "cacheVariables": {
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "CMAKE_CXX_STANDARD": "17",
-        "CMAKE_CXX_STANDARD_REQUIRED": "ON",
-        "CMAKE_CXX_EXTENSIONS": "OFF"
-      }
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 15,
+        "patch": 0
     },
-    {
-      "name": "debug",
-      "inherits": "default",
-      "description": "Debug build with tests enabled + strict warnings and sanitizers",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "MATHLIB_BUILD_TESTS": "OFF",
-        "BUILD_SHARED_LIBS": "OFF",
-        "CMAKE_CXX_CLANG_TIDY": "clang-tidy;--warnings-as-errors=*",
-        "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic -Werror -Wsign-compare -Wconversion -Wshadow -Wnon-virtual-dtor -fsanitize=address,undefined -fno-omit-frame-pointer",
-        "CMAKE_EXE_LINKER_FLAGS": "-fsanitize=address,undefined -fno-omit-frame-pointer"
-      }
-    },
-    {
-      "name": "release",
-      "inherits": "default",
-      "description": "Release build (optimized, no tests, soft warnings)",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "MATHLIB_BUILD_TESTS": "OFF",
-        "BUILD_SHARED_LIBS": "ON",
-        "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic"
-      }
-    }
-  ],
-  "buildPresets": [
-    {
-      "name": "debug",
-      "configurePreset": "debug"
-    },
-    {
-      "name": "release",
-      "configurePreset": "release"
-    }
-  ],
-  "testPresets": [
-    {
-      "name": "debug",
-      "configurePreset": "debug",
-      "output": {
-        "outputOnFailure": true
-      }
-    }
-  ]
+    "configurePresets": [
+        {
+            "name": "default",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_CXX_STANDARD": "17",
+                "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+                "CMAKE_CXX_EXTENSIONS": "OFF"
+            }
+        },
+        {
+            "name": "debug",
+            "inherits": "default",
+            "description": "Debug build with tests enabled + strict warnings and sanitizers",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "MATHLIB_BUILD_TESTS": "OFF",
+                "CALCLIB_BUILD_TESTS": "ON",
+                "BUILD_SHARED_LIBS": "OFF",
+                "CMAKE_CXX_CLANG_TIDY": "clang-tidy;--warnings-as-errors=*",
+                "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic -Werror -Wsign-compare -Wconversion -Wshadow -Wnon-virtual-dtor -fsanitize=address,undefined -fno-omit-frame-pointer",
+                "CMAKE_EXE_LINKER_FLAGS": "-fsanitize=address,undefined -fno-omit-frame-pointer"
+            }
+        },
+        {
+            "name": "release",
+            "inherits": "default",
+            "description": "Release build (optimized, no tests, soft warnings)",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "MATHLIB_BUILD_TESTS": "OFF",
+                "CALCLIB_BUILD_TESTS": "OFF",
+                "BUILD_SHARED_LIBS": "ON",
+                "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "debug",
+            "configurePreset": "debug"
+        },
+        {
+            "name": "release",
+            "configurePreset": "release"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "debug",
+            "configurePreset": "debug",
+            "output": {
+                "outputOnFailure": true
+            }
+        }
+    ]
 }

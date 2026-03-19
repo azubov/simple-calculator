@@ -11,7 +11,32 @@ simple-calculator/
 ├── CMakePresets.json
 ├── README.md
 └── src/
+    └── CMakeLists.txt
+    └── logging/
+        └── Logger.h
+        └── SpdLogger.h
+    └── Log.h
+    └── OperationData.h
+    └── Runner.cpp
+    └── Runner.h
+    └── Parser.cpp
+    └── Parser.h
+    └── Checker.cpp
+    └── Checker.h
+    └── Calculator.cpp
+    └── Calculator.h
+    └── Printer.cpp
+    └── Printer.h
     └── main.cpp
+└── tests/
+    └── CMakeLists.txt
+    └── runner_tests.cpp
+    └── parser_tests.cpp
+    └── checker_tests.cpp
+    └── calculator_tests.cpp
+    └── printer_tests.cpp
+└── example/
+    └── input.json
 ```
 
 ## 🚀 Возможности
@@ -49,7 +74,7 @@ simple-calculator/
 
 ### Доступные пресеты
 
-- **debug** — сборка в режиме `Debug`, `clang-tidy`, строгие предупреждения (`-Wall -Wextra -Wpedantic -Werror`) и санитайзеры (`address`, `undefined`).
+- **debug** — сборка в режиме `Debug`, включает тесты, `clang-tidy`, строгие предупреждения (`-Wall -Wextra -Wpedantic -Werror`) и санитайзеры (`address`, `undefined`).
 - **release** — оптимизированная сборка в режиме `Release`, без тестов, с мягкими предупреждениями.
 
 ### Использование
@@ -59,6 +84,7 @@ simple-calculator/
 ```bash
 cmake --preset debug
 cmake --build --preset debug
+ctest --preset debug --output-on-failure
 ```
 
 Сборка **release** версии:
