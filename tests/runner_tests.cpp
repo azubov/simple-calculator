@@ -1,18 +1,15 @@
 #include "Runner.h"
 
-#include "ICalculatorRepository.h"
+#include "mocks/MockCalculator.h"
+#include "mocks/MockRepository.h"
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <sstream>
 
-struct MockRepository : ICalculatorRepository {
-    void find(OperationData& data) const override {
-        data.result = 7;
-        data.status = OperationData::Status::success;
-    }
-
-    void save(const OperationData&) const override {}
-};
+using ::testing::_;
+using ::testing::Invoke;
+using ::testing::Throw;
 
 TEST(RunnerTests, PrintsHelpAndExits) {
     std::istringstream in("");
@@ -21,7 +18,7 @@ TEST(RunnerTests, PrintsHelpAndExits) {
     Parser parser(in);
     Checker checker;
     MockRepository calculator_repository;
-    Calculator calculator;
+    MockCalculator calculator;
     CalculatorService calculator_service(calculator_repository, calculator);
     Printer printer(out, out);
     Runner runner(parser, checker, calculator_service, printer);
@@ -43,7 +40,7 @@ TEST(RunnerTests, UnknownArgumentProducesError) {
     Parser parser(in);
     Checker checker;
     MockRepository calculator_repository;
-    Calculator calculator;
+    MockCalculator calculator;
     CalculatorService calculator_service(calculator_repository, calculator);
     Printer printer(out, out);
     Runner runner(parser, checker, calculator_service, printer);
@@ -60,10 +57,14 @@ TEST(RunnerTests, SuccessfulRun) {
     Parser parser(in);
     Checker checker;
     MockRepository calculator_repository;
-    Calculator calculator;
+    MockCalculator calculator;
     CalculatorService calculator_service(calculator_repository, calculator);
     Printer printer(out, out);
     Runner runner(parser, checker, calculator_service, printer);
+
+    EXPECT_CALL(calculator, calculate(_)).WillOnce(Invoke([](OperationData& d) {
+        d.result = 7;
+    }));
 
     char* argv[] = {(char*)"calc"};
 
@@ -80,7 +81,7 @@ TEST(RunnerTests, InvalidJsonTriggersException) {
     Parser parser(in);
     Checker checker;
     MockRepository calculator_repository;
-    Calculator calculator;
+    MockCalculator calculator;
     CalculatorService calculator_service(calculator_repository, calculator);
     Printer printer(out, out);
     Runner runner(parser, checker, calculator_service, printer);

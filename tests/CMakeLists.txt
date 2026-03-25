@@ -6,8 +6,9 @@ add_executable(calc_tests
     checker_tests.cpp
     calculator_tests.cpp
     printer_tests.cpp
+    calculator_service_tests.cpp
 )
-target_link_libraries(calc_tests PRIVATE calc_lib GTest::gtest_main)
+target_link_libraries(calc_tests PRIVATE calc_lib GTest::gtest_main GTest::gmock_main)
 set_target_properties(calc_tests PROPERTIES CXX_CLANG_TIDY "")
 
 include(GoogleTest)
