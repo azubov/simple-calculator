@@ -16,6 +16,7 @@ simple-calculator/
     └── logging/
         └── Logger.h
         └── SpdLogger.h
+        └── OperationDataFormatter.h
     └── Log.h
     └── OperationData.h
     └── Runner.cpp
@@ -26,7 +27,6 @@ simple-calculator/
     └── Checker.h
     └── PGConnection.cpp
     └── PGConnection.h
-    └── ICalculatorRepository.h
     └── CalculatorRepository.cpp
     └── CalculatorRepository.h
     └── CalculatorService.cpp
@@ -37,11 +37,13 @@ simple-calculator/
     └── Printer.h
     └── main.cpp
 └── tests/
+    └── mocks/
     └── CMakeLists.txt
     └── runner_tests.cpp
     └── parser_tests.cpp
     └── checker_tests.cpp
     └── calculator_tests.cpp
+    └── calculator_service_tests.cpp
     └── printer_tests.cpp
 └── example/
     └── input.json
