@@ -1,7 +1,14 @@
 #pragma once
 
-#include "ICalculatorRepository.h"
+#include "OperationData.h"
 #include "PGConnection.h"
+
+class ICalculatorRepository {
+public:
+    virtual void find(OperationData&) const = 0;
+    virtual void save(const OperationData&) const = 0;
+    virtual ~ICalculatorRepository() = default;
+};
 
 class CalculatorRepository : public ICalculatorRepository {
 public:

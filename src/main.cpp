@@ -13,14 +13,15 @@
 int main(int argc, char* argv[]) {
     Parser parser;
     Checker checker;
-    PGConnection db_connection;
-    CalculatorRepository calculator_repository(db_connection);
-    Calculator calculator;
-    CalculatorService calculator_service(calculator_repository, calculator);
     Printer printer;
-    Runner runner(parser, checker, calculator_service, printer);
 
     try {
+        PGConnection db_connection;
+        CalculatorRepository calculator_repository(db_connection);
+        Calculator calculator;
+        CalculatorService calculator_service(calculator_repository, calculator);
+        Runner runner(parser, checker, calculator_service, printer);
+
         return runner.run(argc, argv);
     } catch (const std::exception& e) {
         printer.printException(e);

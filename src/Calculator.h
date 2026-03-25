@@ -2,7 +2,13 @@
 
 #include "OperationData.h"
 
-class Calculator {
+class ICalculator {
 public:
-    void calculate(OperationData& data) const;
+    virtual ~ICalculator() = default;
+    virtual void calculate(OperationData& data) const = 0;
+};
+
+class Calculator : public ICalculator {
+public:
+    void calculate(OperationData& data) const override;
 };
