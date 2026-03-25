@@ -1,7 +1,8 @@
 # Simple Calculator
 
 Простой калькулятор на C++ для работы с целыми числами (`std::int64_t`).  
-Использует библиотеку [mathlib](https://github.com/azubov/mathlib) для безопасных математических операций с проверкой переполнений и ошибок.
+Использует библиотеку [mathlib](https://github.com/azubov/mathlib) для безопасных математических операций с проверкой переполнений и ошибок.  
+Поддерживает сохранение и поиск операций в `PostgreSQL`.
 
 ## 📂 Структура проекта
 
@@ -23,6 +24,13 @@ simple-calculator/
     └── Parser.h
     └── Checker.cpp
     └── Checker.h
+    └── PGConnection.cpp
+    └── PGConnection.h
+    └── ICalculatorRepository.h
+    └── CalculatorRepository.cpp
+    └── CalculatorRepository.h
+    └── CalculatorService.cpp
+    └── CalculatorService.h
     └── Calculator.cpp
     └── Calculator.h
     └── Printer.cpp
@@ -37,6 +45,11 @@ simple-calculator/
     └── printer_tests.cpp
 └── example/
     └── input.json
+└── db/
+    └── migrations/
+    └── docker-compose.yaml
+    └── start.sh
+    └── stop.sh
 ```
 
 ## 🚀 Возможности
@@ -50,7 +63,8 @@ simple-calculator/
 - `^` — возведение в степень (только для неотрицательных показателей)
 - `!` — факториал (только для неотрицательных чисел)
 
-Все операции выполняются с проверкой переполнений.
+Все операции выполняются с проверкой переполнений.  
+Результаты вычислений сохраняются в `PostgreSQL`, чтобы избежать повторных вычислений.
 
 ## 🧩 Пример использования
 
@@ -92,4 +106,31 @@ ctest --preset debug --output-on-failure
 ```bash
 cmake --preset release
 cmake --build --preset release
+```
+## 🗄️ Запуск базы данных PostgreSQL
+
+Проект включает готовую конфигурацию `Docker Compose` для локального запуска `PostgreSQL`.
+
+Запуск базы:
+
+```bash
+./db/start.sh
+```
+
+Остановка базы:
+
+```bash
+./db/stop.sh
+```
+
+Подключение к бд через `psql`:
+
+```bash
+docker exec -it postgres psql -U postgres -d calc-db
+```
+
+Посмотреть данные таблицы:
+
+```sql
+SELECT * FROM calc.operations;
 ```
