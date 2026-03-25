@@ -8,6 +8,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: calc-db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 3s
@@ -27,3 +29,6 @@ services:
     command: migrate
     volumes:
       - ./migrations:/flyway/sql
+
+volumes:
+  postgres_data:
