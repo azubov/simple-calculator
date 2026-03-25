@@ -4,11 +4,15 @@
 
 #include <string_view>
 
-Runner::Runner(const Parser& parser, const Checker& checker, const Calculator& calculator,
-               const Printer& printer) noexcept
+Runner::Runner(
+    const Parser& parser,
+    const Checker& checker,
+    const CalculatorService& calculator_service,
+    const Printer& printer
+) noexcept
     : parser_(parser)
     , checker_(checker)
-    , calculator_(calculator)
+    , calculator_service_(calculator_service)
     , printer_(printer) {}
 
 int Runner::run(int argc, char* argv[]) const {
@@ -23,7 +27,7 @@ int Runner::run(int argc, char* argv[]) const {
 
     auto data = parser_.parse();
     checker_.validate(data);
-    calculator_.calculate(data);
+    calculator_service_.calculate(data);
     printer_.printResult(data);
 
     Log::info("Runner finished successfully");

@@ -1,6 +1,9 @@
 #include "Calculator.h"
+#include "CalculatorRepository.h"
+#include "CalculatorService.h"
 #include "Checker.h"
 #include "Log.h"
+#include "PGConnection.h"
 #include "Parser.h"
 #include "Printer.h"
 #include "Runner.h"
@@ -10,9 +13,12 @@
 int main(int argc, char* argv[]) {
     Parser parser;
     Checker checker;
+    PGConnection db_connection;
+    CalculatorRepository calculator_repository(db_connection);
     Calculator calculator;
+    CalculatorService calculator_service(calculator_repository, calculator);
     Printer printer;
-    Runner runner(parser, checker, calculator, printer);
+    Runner runner(parser, checker, calculator_service, printer);
 
     try {
         return runner.run(argc, argv);
