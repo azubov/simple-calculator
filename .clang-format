@@ -1,8 +1,6 @@
 BasedOnStyle: LLVM
 Language: Cpp
 
-ColumnLimit: 120
-
 AccessModifierOffset: -4
 IndentWidth: 4
 UseTab: Never
@@ -15,3 +13,7 @@ BreakConstructorInitializers: BeforeComma
 IndentPPDirectives: AfterHash
 PointerAlignment: Left
 NamespaceIndentation: All
+
+BinPackArguments: false
+BinPackParameters: false
+AlignAfterOpenBracket: BlockIndent
