@@ -1,5 +1,7 @@
 #include "CalculatorRepository.h"
 
+#include "Log.h"
+
 #include <stdexcept>
 #include <string>
 
@@ -8,6 +10,8 @@ CalculatorRepository::CalculatorRepository(const PGConnection& connection
     : connection_(connection) {}
 
 void CalculatorRepository::find(OperationData& data) const {
+    Log::info("Starting to find data..");
+
     std::string first = std::to_string(data.first);
     std::string op(1, data.operation);
     std::string second = data.hasSecond ? std::to_string(data.second) : "";
@@ -40,12 +44,17 @@ void CalculatorRepository::find(OperationData& data) const {
         data.status =
             static_cast<OperationData::Status>(std::stoi(PQgetvalue(res, 0, 1))
             );
+        Log::info(fmt::format("Data found successfully: {}", data));
+    } else {
+        Log::info("Data not found");
     }
 
     PQclear(res);
 }
 
 void CalculatorRepository::save(const OperationData& data) const {
+    Log::info(fmt::format("Starting to save data: {}", data));
+
     std::string first = std::to_string(data.first);
     std::string op(1, data.operation);
     std::string second = data.hasSecond ? std::to_string(data.second) : "";
@@ -78,4 +87,6 @@ void CalculatorRepository::save(const OperationData& data) const {
     }
 
     PQclear(res);
+
+    Log::info("Data saved successfully");
 }

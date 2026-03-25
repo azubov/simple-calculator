@@ -22,5 +22,6 @@ private:
         nullptr, &PQfinish
     };
 
-    void prepareStatements();
+    void prepareStatements() const;
+    std::string connectionInfo() const;
 };
