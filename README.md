@@ -91,6 +91,7 @@ simple-calculator/
 ### Доступные пресеты
 
 - **debug** — сборка в режиме `Debug`, включает тесты, `clang-tidy`, строгие предупреждения (`-Wall -Wextra -Wpedantic -Werror`) и санитайзеры (`address`, `undefined`).
+- **debug-valgrind** — сборка в режиме `Debug`, включает тест .и запускает их под `Valgrind` с расширенной проверкой утечек памяти.
 - **release** — оптимизированная сборка в режиме `Release`, без тестов, с мягкими предупреждениями.
 
 ### Использование
@@ -101,6 +102,14 @@ simple-calculator/
 cmake --preset debug
 cmake --build --preset debug
 ctest --preset debug --output-on-failure
+```
+
+Сборка **debug-valgrind** версии:
+
+```bash
+cmake --preset debug-valgrind
+cmake --build --preset debug-valgrind
+ctest --preset debug-valgrind --output-on-failure
 ```
 
 Сборка **release** версии:

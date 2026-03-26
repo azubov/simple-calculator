@@ -33,6 +33,19 @@
             }
         },
         {
+            "name": "debug-valgrind",
+            "inherits": "default",
+            "description": "Debug build with tests enabled, no sanitizers, optimized for Valgrind",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "MATHLIB_BUILD_TESTS": "OFF",
+                "CALCLIB_BUILD_TESTS": "ON",
+                "ENABLE_VALGRIND": "ON",
+                "BUILD_SHARED_LIBS": "OFF",
+                "CMAKE_CXX_FLAGS": "-fno-omit-frame-pointer -O0 -g"
+            }
+        },
+        {
             "name": "release",
             "inherits": "default",
             "description": "Release build (optimized, no tests, soft warnings)",
@@ -51,6 +64,10 @@
             "configurePreset": "debug"
         },
         {
+            "name": "debug-valgrind",
+            "configurePreset": "debug-valgrind"
+        },
+        {
             "name": "release",
             "configurePreset": "release"
         }
@@ -59,6 +76,13 @@
         {
             "name": "debug",
             "configurePreset": "debug",
+            "output": {
+                "outputOnFailure": true
+            }
+        },
+        {
+            "name": "debug-valgrind",
+            "configurePreset": "debug-valgrind",
             "output": {
                 "outputOnFailure": true
             }
