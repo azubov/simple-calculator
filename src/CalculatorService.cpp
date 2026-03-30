@@ -6,12 +6,12 @@
 #include <stdexcept>
 
 CalculatorService::CalculatorService(
-    const ICalculatorRepository& repository, const ICalculator& calculator
+    ICalculatorRepository& repository, const ICalculator& calculator
 ) noexcept
     : repository_(repository)
     , calculator_(calculator) {}
 
-void CalculatorService::calculate(OperationData& data) const {
+void CalculatorService::calculate(OperationData& data) {
     repository_.find(data);
 
     if (data.status == OperationData::Status::success) {

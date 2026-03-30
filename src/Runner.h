@@ -10,7 +10,7 @@ public:
     explicit Runner(
         const Parser& parser,
         const Checker& checker,
-        const CalculatorService& calculator_service,
+        CalculatorService& calculator_service,
         const Printer& printer
     ) noexcept;
 
@@ -19,7 +19,7 @@ public:
 private:
     const Parser& parser_;
     const Checker& checker_;
-    const CalculatorService& calculator_service_;
+    CalculatorService& calculator_service_;
     const Printer& printer_;
 
     bool handleHelpFlag(int argc, char* argv[]) const;

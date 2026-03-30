@@ -7,7 +7,7 @@
 Runner::Runner(
     const Parser& parser,
     const Checker& checker,
-    const CalculatorService& calculator_service,
+    CalculatorService& calculator_service,
     const Printer& printer
 ) noexcept
     : parser_(parser)

@@ -5,6 +5,7 @@ add_library(calc_lib
     Calculator.cpp
     PGConnection.cpp
     CalculatorRepository.cpp
+    CalculatorCacheRepository.cpp
     CalculatorService.cpp
     Printer.cpp
 )

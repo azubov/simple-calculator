@@ -9,7 +9,7 @@ CalculatorRepository::CalculatorRepository(const PGConnection& connection
 ) noexcept
     : connection_(connection) {}
 
-void CalculatorRepository::find(OperationData& data) const {
+void CalculatorRepository::find(OperationData& data) {
     Log::info("Starting to find data..");
 
     std::string first = std::to_string(data.first);
@@ -52,7 +52,7 @@ void CalculatorRepository::find(OperationData& data) const {
     PQclear(res);
 }
 
-void CalculatorRepository::save(const OperationData& data) const {
+void CalculatorRepository::save(const OperationData& data) {
     Log::info(fmt::format("Starting to save data: {}", data));
 
     std::string first = std::to_string(data.first);
