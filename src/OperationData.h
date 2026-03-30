@@ -8,9 +8,9 @@ struct OperationData {
     std::int64_t first{};
     std::int64_t second{};
     std::int64_t result{};
+    Status status{Status::undefined};
     char operation{};
     bool hasSecond{false};
-    Status status{Status::undefined};
 
     bool operator==(const OperationData& other) const noexcept {
         return first == other.first && second == other.second &&
