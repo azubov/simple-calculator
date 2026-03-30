@@ -6,6 +6,6 @@
 
 class MockRepository : public ICalculatorRepository {
 public:
-    MOCK_METHOD(void, find, (OperationData&), (const, override));
-    MOCK_METHOD(void, save, (const OperationData&), (const, override));
+    MOCK_METHOD(void, find, (OperationData&), (override));
+    MOCK_METHOD(void, save, (const OperationData&), (override));
 };

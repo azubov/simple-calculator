@@ -11,4 +11,10 @@ struct OperationData {
     char operation{};
     bool hasSecond{false};
     Status status{Status::undefined};
+
+    bool operator==(const OperationData& other) const noexcept {
+        return first == other.first && second == other.second &&
+               operation == other.operation && hasSecond == other.hasSecond &&
+               result == other.result && status == other.status;
+    }
 };
