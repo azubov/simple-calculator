@@ -62,6 +62,9 @@ TEST(RunnerTests, SuccessfulRun) {
     Printer printer(out, out);
     Runner runner(parser, checker, calculator_service, printer);
 
+    EXPECT_CALL(calculator_repository, find(_)).Times(1);
+    EXPECT_CALL(calculator_repository, save(_)).Times(1);
+
     EXPECT_CALL(calculator, calculate(_)).WillOnce(Invoke([](OperationData& d) {
         d.result = 7;
     }));
