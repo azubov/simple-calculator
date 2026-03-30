@@ -1,46 +1,47 @@
 #include "Calculator.h"
-#include "OperationData.h"
+
+#include "TestHelper.h"
 
 #include <gtest/gtest.h>
 
 TEST(CalculatorTest, Addition) {
     Calculator calculator;
-    OperationData data{3, 5, 0, '+'};
-    calculator.calculate(data);
-    EXPECT_EQ(data.result, 8);
+    OperationData op = testhelper::makeBinaryOp(3, '+', 5);
+    calculator.calculate(op);
+    EXPECT_EQ(op.result, 8);
 }
 
 TEST(CalculatorTest, Subtraction) {
     Calculator calculator;
-    OperationData data{10, 7, 0, '-'};
-    calculator.calculate(data);
-    EXPECT_EQ(data.result, 3);
+    OperationData op = testhelper::makeBinaryOp(10, '-', 7);
+    calculator.calculate(op);
+    EXPECT_EQ(op.result, 3);
 }
 
 TEST(CalculatorTest, Multiplication) {
     Calculator calculator;
-    OperationData data{2, 3, 0, '*'};
-    calculator.calculate(data);
-    EXPECT_EQ(data.result, 6);
+    OperationData op = testhelper::makeBinaryOp(2, '*', 3);
+    calculator.calculate(op);
+    EXPECT_EQ(op.result, 6);
 }
 
 TEST(CalculatorTest, Division) {
     Calculator calculator;
-    OperationData data{10, 2, 0, '/'};
-    calculator.calculate(data);
-    EXPECT_EQ(data.result, 5);
+    OperationData op = testhelper::makeBinaryOp(10, '/', 2);
+    calculator.calculate(op);
+    EXPECT_EQ(op.result, 5);
 }
 
 TEST(CalculatorTest, Power) {
     Calculator calculator;
-    OperationData data{2, 3, 0, '^'};
-    calculator.calculate(data);
-    EXPECT_EQ(data.result, 8);
+    OperationData op = testhelper::makeBinaryOp(2, '^', 3);
+    calculator.calculate(op);
+    EXPECT_EQ(op.result, 8);
 }
 
 TEST(CalculatorTest, Factorial) {
     Calculator calculator;
-    OperationData data{4, 0, 0, '!'};
-    calculator.calculate(data);
-    EXPECT_EQ(data.result, 24);
+    OperationData op = testhelper::makeUnaryOp(4, '!');
+    calculator.calculate(op);
+    EXPECT_EQ(op.result, 24);
 }

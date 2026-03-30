@@ -1,41 +1,33 @@
+#include "CalculatorCacheRepository.h"
+
+#include "TestHelper.h"
+#include "mocks/MockRepository.h"
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-
-#include "CalculatorCacheRepository.h"
-#include "mocks/MockRepository.h"
 
 using ::testing::_;
 using ::testing::Invoke;
 using ::testing::Return;
-
-static OperationData
-makeOp(long long a, char op, long long b = 0, bool hasSecond = false) {
-    OperationData d{};
-    d.first = a;
-    d.operation = op;
-    d.hasSecond = hasSecond;
-    d.second = b;
-    return d;
-}
 
 TEST(
     CalculatorCacheRepositoryTests,
     Find_ReturnsCachedValue_WithoutCallingRepository
 ) {
     MockRepository repo;
-    CalculatorCacheRepository cacheRepo(repo);
+    CalculatorCacheRepository cache_repo(repo);
 
-    OperationData op = makeOp(1, '+', 2, true);
+    OperationData op = testhelper::makeBinaryOp(1, '+', 2);
     op.result = 3;
     op.status = OperationData::Status::success;
 
     EXPECT_CALL(repo, find(_)).Times(1);
-    cacheRepo.find(op);
+    cache_repo.find(op);
 
     EXPECT_CALL(repo, find(_)).Times(0);
 
-    OperationData op2 = makeOp(1, '+', 2, true);
-    cacheRepo.find(op2);
+    OperationData op2 = testhelper::makeBinaryOp(1, '+', 2);
+    cache_repo.find(op2);
 
     EXPECT_EQ(op2.result, 3);
     EXPECT_EQ(op2.status, OperationData::Status::success);
@@ -43,57 +35,57 @@ TEST(
 
 TEST(CalculatorCacheRepositoryTests, Find_CallsRepositoryOnCacheMiss) {
     MockRepository repo;
-    CalculatorCacheRepository cacheRepo(repo);
+    CalculatorCacheRepository cache_repo(repo);
 
-    OperationData op = makeOp(10, '-', 3, true);
+    OperationData op = testhelper::makeBinaryOp(10, '-', 3);
 
     EXPECT_CALL(repo, find(_)).Times(1).WillOnce(Invoke([](OperationData& d) {
         d.result = 7;
         d.status = OperationData::Status::success;
     }));
 
-    cacheRepo.find(op);
+    cache_repo.find(op);
 
     EXPECT_EQ(op.result, 7);
 }
 
 TEST(CalculatorCacheRepositoryTests, Save_UpdatesCacheAndRepository) {
     MockRepository repo;
-    CalculatorCacheRepository cacheRepo(repo);
+    CalculatorCacheRepository cache_repo(repo);
 
-    OperationData op = makeOp(4, '*', 5, true);
+    OperationData op = testhelper::makeBinaryOp(4, '*', 5);
     op.result = 20;
     op.status = OperationData::Status::success;
 
     EXPECT_CALL(repo, save(op)).Times(1);
 
-    cacheRepo.save(op);
+    cache_repo.save(op);
 
     EXPECT_CALL(repo, find(_)).Times(0);
 
-    OperationData op2 = makeOp(4, '*', 5, true);
-    cacheRepo.find(op2);
+    OperationData op2 = testhelper::makeBinaryOp(4, '*', 5);
+    cache_repo.find(op2);
 
     EXPECT_EQ(op2.result, 20);
 }
 
 TEST(CalculatorCacheRepositoryTests, CommutativeOperations_UseSameCacheKey) {
     MockRepository repo;
-    CalculatorCacheRepository cacheRepo(repo);
+    CalculatorCacheRepository cache_repo(repo);
 
-    OperationData op1 = makeOp(1, '+', 2, true);
-    OperationData op2 = makeOp(2, '+', 1, true);
+    OperationData op1 = testhelper::makeBinaryOp(1, '+', 2);
+    OperationData op2 = testhelper::makeBinaryOp(2, '+', 1);
 
     EXPECT_CALL(repo, find(_)).Times(1).WillOnce(Invoke([](OperationData& d) {
         d.result = 3;
         d.status = OperationData::Status::success;
     }));
 
-    cacheRepo.find(op1);
+    cache_repo.find(op1);
 
     EXPECT_CALL(repo, find(_)).Times(0);
 
-    cacheRepo.find(op2);
+    cache_repo.find(op2);
 
     EXPECT_EQ(op2.result, 3);
 }
@@ -102,10 +94,10 @@ TEST(
     CalculatorCacheRepositoryTests, NonCommutativeOperations_UseDifferentKeys
 ) {
     MockRepository repo;
-    CalculatorCacheRepository cacheRepo(repo);
+    CalculatorCacheRepository cache_repo(repo);
 
-    OperationData op1 = makeOp(5, '-', 2, true);
-    OperationData op2 = makeOp(2, '-', 5, true);
+    OperationData op1 = testhelper::makeBinaryOp(5, '-', 2);
+    OperationData op2 = testhelper::makeBinaryOp(2, '-', 5);
 
     EXPECT_CALL(repo, find(_))
         .Times(2)
@@ -114,8 +106,8 @@ TEST(
             d.status = OperationData::Status::success;
         }));
 
-    cacheRepo.find(op1);
-    cacheRepo.find(op2);
+    cache_repo.find(op1);
+    cache_repo.find(op2);
 
     EXPECT_EQ(op1.result, 3);
     EXPECT_EQ(op2.result, -3);
@@ -123,21 +115,21 @@ TEST(
 
 TEST(CalculatorCacheRepositoryTests, UnaryOperation_UsesCorrectKey) {
     MockRepository repo;
-    CalculatorCacheRepository cacheRepo(repo);
+    CalculatorCacheRepository cache_repo(repo);
 
-    OperationData op = makeOp(5, '!', 0, false);
+    OperationData op = testhelper::makeUnaryOp(5, '!');
 
     EXPECT_CALL(repo, find(_)).Times(1).WillOnce(Invoke([](OperationData& d) {
         d.result = 120;
         d.status = OperationData::Status::success;
     }));
 
-    cacheRepo.find(op);
+    cache_repo.find(op);
 
     EXPECT_CALL(repo, find(_)).Times(0);
 
-    OperationData op2 = makeOp(5, '!', 0, false);
-    cacheRepo.find(op2);
+    OperationData op2 = testhelper::makeUnaryOp(5, '!');
+    cache_repo.find(op2);
 
     EXPECT_EQ(op2.result, 120);
 }
