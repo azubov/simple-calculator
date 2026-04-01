@@ -16,6 +16,7 @@ simple-calculator/
     └── logging/
         └── Logger.h
         └── SpdLogger.h
+        └── NullLogger.h
         └── OperationDataFormatter.h
     └── Log.h
     └── OperationData.h
@@ -51,7 +52,7 @@ simple-calculator/
     └── checker_tests.cpp
     └── simple_calculator_tests.cpp
     └── calculator_service_tests.cpp
-    └── calculator_cache_repository_tests.cpp.cpp
+    └── cached_calculator_repository_tests.cpp
     └── printer_tests.cpp
     └── leak_memchecked_test.cpp
 └── example/
