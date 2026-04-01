@@ -10,6 +10,9 @@ add_executable(calc_tests
     calculator_service_tests.cpp
     leak_memchecked_test.cpp
 )
+
+target_compile_definitions(calc_lib PRIVATE USE_NULL_LOGGER)
+
 target_link_libraries(calc_tests PRIVATE calc_lib GTest::gtest_main GTest::gmock_main)
 set_target_properties(calc_tests PROPERTIES CXX_CLANG_TIDY "")
 

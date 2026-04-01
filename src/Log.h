@@ -2,6 +2,13 @@
 
 #include "logging/Logger.h"
 #include "logging/OperationDataFormatter.h"
-#include "logging/SpdLogger.h"
 
-using Log = LoggerSelector<SpdLogger>;
+#ifdef USE_NULL_LOGGER
+#    include "logging/NullLogger.h"
+#    define LOGGER NullLogger
+#else
+#    include "logging/SpdLogger.h"
+#    define LOGGER SpdLogger
+#endif
+
+using Log = LOGGER;

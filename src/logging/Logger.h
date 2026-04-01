@@ -19,6 +19,3 @@ struct Logger {
         instance().errorImpl(msg);
     }
 };
-
-template <typename T>
-using LoggerSelector = T;
