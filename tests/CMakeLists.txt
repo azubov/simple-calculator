@@ -6,7 +6,7 @@ add_executable(calc_tests
     checker_tests.cpp
     simple_calculator_tests.cpp
     printer_tests.cpp
-    calculator_cache_repository_tests.cpp
+    cached_calculator_repository_tests.cpp
     calculator_service_tests.cpp
     leak_memchecked_test.cpp
 )
