@@ -1,15 +1,20 @@
 #pragma once
 
-#include <libpq-fe.h>
+#include "PGResult.h"
 
+#include <libpq-fe.h>
 #include <memory>
 #include <string>
+#include <vector>
 
 class PGConnection {
 public:
     PGConnection();
 
-    PGconn* connect() const;
+    PGResult exec(const std::string& sql);
+    PGResult execPrepared(
+        const std::string& stmt_name, const std::vector<std::string>& params
+    );
 
 private:
     std::string host_ = "localhost";
@@ -22,6 +27,5 @@ private:
         nullptr, &PQfinish
     };
 
-    void prepareStatements() const;
     std::string connectionInfo() const;
 };

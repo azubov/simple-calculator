@@ -7,14 +7,14 @@
 class CalculatorService {
 public:
     explicit CalculatorService(
-        ICalculatorRepository& repository, const ICalculator& calculator
+        CalculatorRepository& repository, const Calculator& calculator
     ) noexcept;
 
     void calculate(OperationData& data);
 
 private:
-    ICalculatorRepository& repository_;
-    const ICalculator& calculator_;
+    CalculatorRepository& repository_;
+    const Calculator& calculator_;
 
     void
     saveWithStatus(OperationData& data, OperationData::Status status) const;

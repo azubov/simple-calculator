@@ -1,12 +1,11 @@
 #include "CalculatorService.h"
 
 #include "Log.h"
-#include "OperationData.h"
 
 #include <stdexcept>
 
 CalculatorService::CalculatorService(
-    ICalculatorRepository& repository, const ICalculator& calculator
+    CalculatorRepository& repository, const Calculator& calculator
 ) noexcept
     : repository_(repository)
     , calculator_(calculator) {}
