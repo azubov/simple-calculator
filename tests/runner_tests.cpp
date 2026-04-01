@@ -1,3 +1,4 @@
+#include "OperationData.h"
 #include "Runner.h"
 
 #include "mocks/MockCalculator.h"
@@ -63,11 +64,12 @@ TEST(RunnerTests, SuccessfulRun) {
     Runner runner(parser, checker, calculator_service, printer);
 
     EXPECT_CALL(calculator_repository, find(_)).Times(1);
-    EXPECT_CALL(calculator_repository, save(_)).Times(1);
 
     EXPECT_CALL(calculator, calculate(_)).WillOnce(Invoke([](OperationData& d) {
         d.result = 7;
     }));
+
+    EXPECT_CALL(calculator_repository, save(_)).Times(1);
 
     char* argv[] = {(char*)"calc"};
 

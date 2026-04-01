@@ -1,4 +1,4 @@
-#include "CalculatorCacheRepository.h"
+#include "CachedCalculatorRepository.h"
 
 #include "TestHelper.h"
 #include "mocks/MockRepository.h"
@@ -11,11 +11,11 @@ using ::testing::Invoke;
 using ::testing::Return;
 
 TEST(
-    CalculatorCacheRepositoryTests,
+    CachedCalculatorRepositoryTests,
     Find_ReturnsCachedValue_WithoutCallingRepository
 ) {
     MockRepository repo;
-    CalculatorCacheRepository cache_repo(repo);
+    CachedCalculatorRepository cache_repo(repo);
 
     OperationData op = testhelper::makeBinaryOp(1, '+', 2);
     op.result = 3;
@@ -33,9 +33,9 @@ TEST(
     EXPECT_EQ(op2.status, OperationData::Status::success);
 }
 
-TEST(CalculatorCacheRepositoryTests, Find_CallsRepositoryOnCacheMiss) {
+TEST(CachedCalculatorRepositoryTests, Find_CallsRepositoryOnCacheMiss) {
     MockRepository repo;
-    CalculatorCacheRepository cache_repo(repo);
+    CachedCalculatorRepository cache_repo(repo);
 
     OperationData op = testhelper::makeBinaryOp(10, '-', 3);
 
@@ -49,9 +49,9 @@ TEST(CalculatorCacheRepositoryTests, Find_CallsRepositoryOnCacheMiss) {
     EXPECT_EQ(op.result, 7);
 }
 
-TEST(CalculatorCacheRepositoryTests, Save_UpdatesCacheAndRepository) {
+TEST(CachedCalculatorRepositoryTests, Save_UpdatesCacheAndRepository) {
     MockRepository repo;
-    CalculatorCacheRepository cache_repo(repo);
+    CachedCalculatorRepository cache_repo(repo);
 
     OperationData op = testhelper::makeBinaryOp(4, '*', 5);
     op.result = 20;
@@ -69,9 +69,9 @@ TEST(CalculatorCacheRepositoryTests, Save_UpdatesCacheAndRepository) {
     EXPECT_EQ(op2.result, 20);
 }
 
-TEST(CalculatorCacheRepositoryTests, CommutativeOperations_UseSameCacheKey) {
+TEST(CachedCalculatorRepositoryTests, CommutativeOperations_UseSameCacheKey) {
     MockRepository repo;
-    CalculatorCacheRepository cache_repo(repo);
+    CachedCalculatorRepository cache_repo(repo);
 
     OperationData op1 = testhelper::makeBinaryOp(1, '+', 2);
     OperationData op2 = testhelper::makeBinaryOp(2, '+', 1);
@@ -91,10 +91,10 @@ TEST(CalculatorCacheRepositoryTests, CommutativeOperations_UseSameCacheKey) {
 }
 
 TEST(
-    CalculatorCacheRepositoryTests, NonCommutativeOperations_UseDifferentKeys
+    CachedCalculatorRepositoryTests, NonCommutativeOperations_UseDifferentKeys
 ) {
     MockRepository repo;
-    CalculatorCacheRepository cache_repo(repo);
+    CachedCalculatorRepository cache_repo(repo);
 
     OperationData op1 = testhelper::makeBinaryOp(5, '-', 2);
     OperationData op2 = testhelper::makeBinaryOp(2, '-', 5);
@@ -113,9 +113,9 @@ TEST(
     EXPECT_EQ(op2.result, -3);
 }
 
-TEST(CalculatorCacheRepositoryTests, UnaryOperation_UsesCorrectKey) {
+TEST(CachedCalculatorRepositoryTests, UnaryOperation_UsesCorrectKey) {
     MockRepository repo;
-    CalculatorCacheRepository cache_repo(repo);
+    CachedCalculatorRepository cache_repo(repo);
 
     OperationData op = testhelper::makeUnaryOp(5, '!');
 
