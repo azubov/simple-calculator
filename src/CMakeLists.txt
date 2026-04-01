@@ -2,10 +2,11 @@ add_library(calc_lib
     Runner.cpp
     Parser.cpp
     Checker.cpp
-    Calculator.cpp
+    SimpleCalculator.cpp
     PGConnection.cpp
-    CalculatorRepository.cpp
-    CalculatorCacheRepository.cpp
+    StatementInitializer.cpp
+    PostgresCalculatorRepository.cpp
+    CachedCalculatorRepository.cpp
     CalculatorService.cpp
     Printer.cpp
 )

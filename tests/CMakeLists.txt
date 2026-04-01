@@ -4,7 +4,7 @@ add_executable(calc_tests
     runner_tests.cpp
     parser_tests.cpp
     checker_tests.cpp
-    calculator_tests.cpp
+    simple_calculator_tests.cpp
     printer_tests.cpp
     calculator_cache_repository_tests.cpp
     calculator_service_tests.cpp
