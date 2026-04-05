@@ -2,11 +2,9 @@
 
 #include "logging/Logger.h"
 
-class NullLogger : public Logger<NullLogger> {
-    friend struct Logger<NullLogger>;
-
-private:
-    void infoImpl(std::string_view) {}
-    void debugImpl(std::string_view) {}
-    void errorImpl(std::string_view) {}
+class NullLogger : public Logger {
+public:
+    void info(std::string_view) override {}
+    void debug(std::string_view) override {}
+    void error(std::string_view) override {}
 };

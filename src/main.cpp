@@ -13,6 +13,8 @@
 #include <fmt/format.h>
 
 int main(int argc, char* argv[]) {
+    Log::setLogger(std::make_shared<SpdLogger>());
+
     Parser parser;
     Checker checker;
     Printer printer;

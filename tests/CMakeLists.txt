@@ -1,6 +1,7 @@
 find_package(GTest REQUIRED)
 
 add_executable(calc_tests
+    main.cpp
     runner_tests.cpp
     parser_tests.cpp
     checker_tests.cpp
@@ -11,9 +12,7 @@ add_executable(calc_tests
     leak_memchecked_test.cpp
 )
 
-target_compile_definitions(calc_lib PRIVATE USE_NULL_LOGGER)
-
-target_link_libraries(calc_tests PRIVATE calc_lib GTest::gtest_main GTest::gmock_main)
+target_link_libraries(calc_tests PRIVATE calc_lib GTest::gtest GTest::gmock)
 set_target_properties(calc_tests PROPERTIES CXX_CLANG_TIDY "")
 
 if(ENABLE_VALGRIND)

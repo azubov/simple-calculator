@@ -1,34 +1,30 @@
 #pragma once
 
-#include "Logger.h"
+#include "logging/Logger.h"
 
 #include <spdlog/logger.h>
 #include <spdlog/sinks/basic_file_sink.h>
 
-#include <memory>
-
-class SpdLogger : public Logger<SpdLogger> {
-    friend struct Logger<SpdLogger>;
-
+class SpdLogger : public Logger {
 public:
-    SpdLogger() {
+    explicit SpdLogger() {
         logger_ = spdlog::basic_logger_mt("calc_logger", "calculator.log");
         logger_->set_level(spdlog::level::debug);
         logger_->flush_on(spdlog::level::info);
     }
 
-private:
-    void infoImpl(std::string_view msg) {
+    void info(std::string_view msg) override {
         logger_->info(msg);
     }
 
-    void debugImpl(std::string_view msg) {
+    void debug(std::string_view msg) override {
         logger_->debug(msg);
     }
 
-    void errorImpl(std::string_view msg) {
+    void error(std::string_view msg) override {
         logger_->error(msg);
     }
 
+private:
     std::shared_ptr<spdlog::logger> logger_;
 };
