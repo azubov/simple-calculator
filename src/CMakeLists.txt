@@ -3,6 +3,7 @@ add_library(calc_lib
     Parser.cpp
     Checker.cpp
     SimpleCalculator.cpp
+    CpuHeavyCalculator.cpp
     PGConnection.cpp
     StatementInitializer.cpp
     PostgresCalculatorRepository.cpp

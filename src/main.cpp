@@ -1,6 +1,8 @@
 #include "CachedCalculatorRepository.h"
+#include "Calculator.h"
 #include "CalculatorService.h"
 #include "Checker.h"
+#include "CpuHeavyCalculator.h"
 #include "Log.h"
 #include "PGConnection.h"
 #include "Parser.h"
@@ -27,10 +29,14 @@ int main(int argc, char* argv[]) {
         CachedCalculatorRepository cached_repository(pg_repository);
         cached_repository.fillCacheFromRepository();
 
+#ifdef ENABLE_CPU_LOAD
         SimpleCalculator simple_calculator;
-        CalculatorService calculator_service(
-            cached_repository, simple_calculator
-        );
+        CpuHeavyCalculator calculator(simple_calculator);
+#else
+        SimpleCalculator calculator;
+#endif
+
+        CalculatorService calculator_service(cached_repository, calculator);
         Runner runner(parser, checker, calculator_service, printer);
 
         return runner.run(argc, argv);
