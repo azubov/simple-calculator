@@ -41,6 +41,8 @@ simple-calculator/
     └── Calculator.h
     └── SimpleCalculator.h
     └── SimpleCalculator.cpp
+    └── CpuHeavyCalculator.h
+    └── CpuHeavyCalculator.cpp
     └── Printer.cpp
     └── Printer.h
     └── main.cpp
@@ -55,6 +57,7 @@ simple-calculator/
     └── cached_calculator_repository_tests.cpp
     └── printer_tests.cpp
     └── leak_memchecked_test.cpp
+    └── main.cpp
 └── example/
     └── input.json
 └── db/
@@ -101,32 +104,61 @@ simple-calculator/
 ### Доступные пресеты
 
 - **debug** — сборка в режиме `Debug`, включает тесты, `clang-tidy`, строгие предупреждения (`-Wall -Wextra -Wpedantic -Werror`) и санитайзеры (`address`, `undefined`).
-- **debug-valgrind** — сборка в режиме `Debug`, включает тест .и запускает их под `Valgrind` с расширенной проверкой утечек памяти.
+- **debug-valgrind** — сборка в режиме `Debug`, включает тесты и запускает их под `Valgrind` с расширенной проверкой утечек памяти.
+- **perf** — оптимизированная сборка для анализа производительности приложения с использованием утилиты `perf`. Без тестов, без предупреждений компилятора.
 - **release** — оптимизированная сборка в режиме `Release`, без тестов, с мягкими предупреждениями.
 
 ### Использование
 
 Сборка **debug** версии:
-
 ```bash
 cmake --preset debug
 cmake --build --preset debug
 ctest --preset debug --output-on-failure
 ```
 
-Сборка **debug-valgrind** версии:
+Запуск **debug** версии:
+```bash
+./build/debug/calc < ./example/input.json
+```
 
+Сборка **debug-valgrind** версии:
 ```bash
 cmake --preset debug-valgrind
 cmake --build --preset debug-valgrind
 ctest --preset debug-valgrind --output-on-failure
 ```
 
-Сборка **release** версии:
+Запуск **debug-valgrind** версии:
+```bash
+valgrind --leak-check=full --show-leak-kinds=all ./build/debug-valgrind/calc < ./example/input.json
+```
 
+Сборка **perf** версии:
+```bash
+cmake --preset perf
+cmake --build --preset perf
+```
+
+Запуск **perf** версии:
+```bash
+perf record -o build/perf/perf.data -- ./build/perf/calc < ./example/input.json
+```
+
+Анализ отчета производительности **perf**:
+```bash
+perf report -i build/perf/perf.data
+```
+
+Сборка **release** версии:
 ```bash
 cmake --preset release
 cmake --build --preset release
+```
+
+Запуск **release** версии:
+```bash
+./build/release/calc < ./example/input.json
 ```
 ## 🗄️ Запуск базы данных PostgreSQL
 
