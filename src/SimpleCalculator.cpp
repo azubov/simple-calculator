@@ -1,10 +1,10 @@
-#include "Calculator.h"
+#include "SimpleCalculator.h"
 
 #include "Log.h"
 
 #include <mathlib/math_operations.h>
 
-void Calculator::calculate(OperationData& data) const {
+void SimpleCalculator::calculate(OperationData& data) const {
     Log::info("Staring to calculate..");
 
     if (data.operation == '+') {

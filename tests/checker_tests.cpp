@@ -1,67 +1,44 @@
 #include "Checker.h"
+
 #include "OperationData.h"
+#include "TestHelper.h"
 
 #include <gtest/gtest.h>
 
 TEST(CheckerTests, ValidBinaryOperation) {
-    OperationData data;
-    data.first = 1;
-    data.operation = '+';
-    data.second = 2;
-    data.hasSecond = true;
-
     Checker checker;
+    OperationData data = testhelper::makeBinaryOp(1, '+', 2);
     EXPECT_NO_THROW(checker.validate(data));
 }
 
 TEST(CheckerTests, MissingSecondOperandForBinaryOp) {
-    OperationData data;
-    data.first = 1;
-    data.operation = '+';
-
     Checker checker;
+    OperationData data = testhelper::makeUnaryOp(1, '+');
     EXPECT_THROW(checker.validate(data), std::invalid_argument);
 }
 
 TEST(CheckerTests, FactorialWithSecondOperandShouldFail) {
-    OperationData data;
-    data.first = 1;
-    data.operation = '!';
-    data.second = 2;
-    data.hasSecond = true;
-
     Checker checker;
+    OperationData data = testhelper::makeBinaryOp(1, '!', 2);
     EXPECT_THROW(checker.validate(data), std::invalid_argument);
 }
 
 TEST(CheckerTests, FactorialWithoutSecondOperandShouldPass) {
-    OperationData data;
-    data.first = 1;
-    data.operation = '!';
-
     Checker checker;
+    OperationData data = testhelper::makeUnaryOp(1, '!');
     EXPECT_NO_THROW(checker.validate(data));
 }
 
 TEST(CheckerTests, UnsupportedOperationShouldFail) {
-    OperationData data;
-    data.first = 1;
-    data.operation = '?';
-    data.second = 2;
-    data.hasSecond = true;
-
     Checker checker;
+    OperationData data = testhelper::makeBinaryOp(1, '?', 2);
     EXPECT_THROW(checker.validate(data), std::invalid_argument);
 }
 
 TEST(CheckerTests, AllSupportedOperationsShouldPass) {
     Checker checker;
     for (char op : std::string("+-*/^")) {
-        OperationData data;
-        data.first = 1;
-        data.operation = op;
-        data.second = 2;
-        data.hasSecond = true;
+        OperationData data = testhelper::makeBinaryOp(1, op, 2);
         EXPECT_NO_THROW(checker.validate(data));
     }
 }

@@ -4,5 +4,6 @@
 
 class Calculator {
 public:
-    void calculate(OperationData& data) const;
+    virtual void calculate(OperationData&) const = 0;
+    virtual ~Calculator() = default;
 };

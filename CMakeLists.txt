@@ -19,6 +19,33 @@ add_subdirectory(src)
 add_executable(calc src/main.cpp)
 target_link_libraries(calc PRIVATE calc_lib)
 
+option(ENABLE_VALGRIND "Run under Valgrind" OFF)
+
+if(ENABLE_VALGRIND)
+    find_program(VALGRIND_EXECUTABLE valgrind REQUIRED)
+
+    set(VALGRIND_OPTS
+        --error-exitcode=1
+        --tool=memcheck
+        --leak-check=full
+        --show-leak-kinds=all
+        --track-origins=yes
+        --num-callers=25
+    )
+
+    add_custom_target(run-valgrind
+        COMMAND ${VALGRIND_EXECUTABLE} ${VALGRIND_OPTS} ${CMAKE_BINARY_DIR}/calc
+        DEPENDS calc
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+endif()
+
+option(ENABLE_CPU_LOAD "Enable calculator with cpu load" OFF)
+
+if(ENABLE_CPU_LOAD)
+    add_compile_definitions(calc PRIVATE ENABLE_CPU_LOAD)
+endif()
+
 option(CALCLIB_BUILD_TESTS "Build calclib tests" OFF)
 
 if(CALCLIB_BUILD_TESTS)

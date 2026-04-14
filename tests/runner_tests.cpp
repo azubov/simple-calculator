@@ -1,7 +1,16 @@
+#include "OperationData.h"
 #include "Runner.h"
 
+#include "mocks/MockCalculator.h"
+#include "mocks/MockRepository.h"
+
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <sstream>
+
+using ::testing::_;
+using ::testing::Invoke;
+using ::testing::Throw;
 
 TEST(RunnerTests, PrintsHelpAndExits) {
     std::istringstream in("");
@@ -9,16 +18,20 @@ TEST(RunnerTests, PrintsHelpAndExits) {
 
     Parser parser(in);
     Checker checker;
-    Calculator calculator;
+    MockRepository calculator_repository;
+    MockCalculator calculator;
+    CalculatorService calculator_service(calculator_repository, calculator);
     Printer printer(out, out);
-    Runner runner(parser, checker, calculator, printer);
+    Runner runner(parser, checker, calculator_service, printer);
 
     char* argv[] = {(char*)"calc", (char*)"--help"};
 
     int code = runner.run(2, argv);
 
     EXPECT_EQ(code, 0);
-    EXPECT_NE(out.str().find("This is a simple calculator!"), std::string::npos);
+    EXPECT_NE(
+        out.str().find("This is a simple calculator!"), std::string::npos
+    );
 }
 
 TEST(RunnerTests, UnknownArgumentProducesError) {
@@ -27,9 +40,11 @@ TEST(RunnerTests, UnknownArgumentProducesError) {
 
     Parser parser(in);
     Checker checker;
-    Calculator calculator;
+    MockRepository calculator_repository;
+    MockCalculator calculator;
+    CalculatorService calculator_service(calculator_repository, calculator);
     Printer printer(out, out);
-    Runner runner(parser, checker, calculator, printer);
+    Runner runner(parser, checker, calculator_service, printer);
 
     char* argv[] = {(char*)"calc", (char*)"--unknown"};
 
@@ -42,9 +57,19 @@ TEST(RunnerTests, SuccessfulRun) {
 
     Parser parser(in);
     Checker checker;
-    Calculator calculator;
+    MockRepository calculator_repository;
+    MockCalculator calculator;
+    CalculatorService calculator_service(calculator_repository, calculator);
     Printer printer(out, out);
-    Runner runner(parser, checker, calculator, printer);
+    Runner runner(parser, checker, calculator_service, printer);
+
+    EXPECT_CALL(calculator_repository, find(_)).Times(1);
+
+    EXPECT_CALL(calculator, calculate(_)).WillOnce(Invoke([](OperationData& d) {
+        d.result = 7;
+    }));
+
+    EXPECT_CALL(calculator_repository, save(_)).Times(1);
 
     char* argv[] = {(char*)"calc"};
 
@@ -53,15 +78,18 @@ TEST(RunnerTests, SuccessfulRun) {
     EXPECT_EQ(code, 0);
     EXPECT_NE(out.str().find('7'), std::string::npos);
 }
+
 TEST(RunnerTests, InvalidJsonTriggersException) {
     std::istringstream in("{ invalid json }");
     std::ostringstream out;
 
     Parser parser(in);
     Checker checker;
-    Calculator calculator;
+    MockRepository calculator_repository;
+    MockCalculator calculator;
+    CalculatorService calculator_service(calculator_repository, calculator);
     Printer printer(out, out);
-    Runner runner(parser, checker, calculator, printer);
+    Runner runner(parser, checker, calculator_service, printer);
 
     char* argv[] = {(char*)"calc"};
 
