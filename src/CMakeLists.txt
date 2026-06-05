@@ -10,6 +10,7 @@ add_library(calc_lib
     CachedCalculatorRepository.cpp
     CalculatorService.cpp
     Printer.cpp
+    Application.cpp
 )
 target_include_directories(calc_lib PUBLIC 
     ${mathlib_SOURCE_DIR}/include
@@ -27,3 +28,9 @@ target_link_libraries(calc_lib PUBLIC
     spdlog::spdlog
     PostgreSQL::PostgreSQL
 )
+
+option(ENABLE_CPU_LOAD "Enable calculator with cpu load" OFF)
+
+if(ENABLE_CPU_LOAD)
+    target_compile_definitions(calc_lib PRIVATE ENABLE_CPU_LOAD)
+endif()

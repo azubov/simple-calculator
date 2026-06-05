@@ -40,12 +40,6 @@ if(ENABLE_VALGRIND)
     )
 endif()
 
-option(ENABLE_CPU_LOAD "Enable calculator with cpu load" OFF)
-
-if(ENABLE_CPU_LOAD)
-    add_compile_definitions(calc PRIVATE ENABLE_CPU_LOAD)
-endif()
-
 option(CALCLIB_BUILD_TESTS "Build calclib tests" OFF)
 
 if(CALCLIB_BUILD_TESTS)

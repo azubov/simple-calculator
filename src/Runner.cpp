@@ -18,18 +18,24 @@ Runner::Runner(
 int Runner::run(int argc, char* argv[]) const {
     Log::info("Runner started");
 
-    if (handleHelpFlag(argc, argv)) {
-        printer_.printHelp();
+    try {
+        if (handleHelpFlag(argc, argv)) {
+            printer_.printHelp();
 
-        Log::info("Runner finished successfully");
-        return 0;
+            Log::info("Runner finished successfully");
+            return 0;
+        }
+
+        auto data = parser_.parse();
+        checker_.validate(data);
+        calculator_service_.calculate(data);
+        printer_.printResult(data);
+
+    } catch (const std::exception& e) {
+        printer_.printException(e);
+        Log::error("Runner finished with error");
+        throw;
     }
-
-    auto data = parser_.parse();
-    checker_.validate(data);
-    calculator_service_.calculate(data);
-    printer_.printResult(data);
-
     Log::info("Runner finished successfully");
     return 0;
 }
