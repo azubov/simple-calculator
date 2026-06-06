@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+find_package(Threads REQUIRED)
+
 include(FetchContent)
 FetchContent_Declare(
         mathlib
@@ -17,7 +19,7 @@ set_target_properties(mathlib PROPERTIES CXX_CLANG_TIDY "")
 add_subdirectory(src)
 
 add_executable(calc src/main.cpp)
-target_link_libraries(calc PRIVATE calc_lib)
+target_link_libraries(calc PRIVATE calc_lib Threads::Threads)
 
 option(ENABLE_VALGRIND "Run under Valgrind" OFF)
 

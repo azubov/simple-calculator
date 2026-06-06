@@ -187,3 +187,37 @@ docker exec -it postgres psql -U postgres -d calc-db
 ```sql
 SELECT * FROM calc.operations;
 ```
+
+## Systemd Support
+
+Проект включает готовую конфигурацию `calculator.service` для запуска в режиме демона Linux.
+
+### 1. Установка unit-файлов
+```bash
+sudo cp calculator.service /etc/systemd/system/
+```
+
+### 2. Обновить systemd
+```bash
+sudo systemctl daemon-reload
+```
+
+### 3. Запуск
+```bash
+sudo systemctl start calculator
+```
+
+### 4. Проверка
+```bash
+systemctl status calculator
+```
+
+### 5. Перезапуск
+```bash
+sudo systemctl restart calculator
+```
+
+### 6. Остановка
+```bash
+sudo systemctl stop calculator
+```

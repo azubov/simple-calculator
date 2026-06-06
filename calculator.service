@@ -1,0 +1,11 @@
+[Unit]
+Description=Calculator
+After=network.target
+
+[Service]
+Type=notify
+WorkingDirectory=/home/artem/CLionProjects/simple-calculator/build/debug
+ExecStart=/home/artem/CLionProjects/simple-calculator/build/debug/calc
+
+[Install]
+WantedBy=multi-user.target

@@ -14,11 +14,14 @@
 #    include "CpuHeavyCalculator.h"
 #endif
 
+#include <atomic>
+
 class Application {
 
 public:
     Application();
-    int run(int argc, char* argv[]);
+    void run(int argc, char* argv[]);
+    void stop();
 
 private:
     Parser parser_;
@@ -33,4 +36,6 @@ private:
 #endif
     CalculatorService calculator_service_;
     Runner runner_;
+
+    std::atomic<bool> is_running_{true};
 };

@@ -11,10 +11,17 @@ Application::Application()
     , calculator_service_(cached_repository_, simple_calculator_)
 #endif
     , runner_(parser_, checker_, calculator_service_, printer_) {
+
     StatementInitializer::prepareCalculatorStatements(db_connection_);
     cached_repository_.fillCacheFromRepository();
 }
 
-int Application::run(int argc, char* argv[]) {
-    return runner_.run(argc, argv);
+void Application::run(int argc, char* argv[]) {
+    while (is_running_.load(std::memory_order_acquire)) {
+        runner_.run(argc, argv);
+    }
+}
+
+void Application::stop() {
+    is_running_.store(false, std::memory_order_release);
 }

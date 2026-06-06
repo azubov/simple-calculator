@@ -11,6 +11,7 @@ add_library(calc_lib
     CalculatorService.cpp
     Printer.cpp
     Application.cpp
+    SystemSignal.cpp
 )
 target_include_directories(calc_lib PUBLIC 
     ${mathlib_SOURCE_DIR}/include
@@ -34,3 +35,10 @@ option(ENABLE_CPU_LOAD "Enable calculator with cpu load" OFF)
 if(ENABLE_CPU_LOAD)
     target_compile_definitions(calc_lib PRIVATE ENABLE_CPU_LOAD)
 endif()
+
+# --- systemd support ---
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(SYSTEMD REQUIRED libsystemd)
+
+target_include_directories(calc_lib PRIVATE ${SYSTEMD_INCLUDE_DIRS})
+target_link_libraries(calc_lib PRIVATE ${SYSTEMD_LIBRARIES})
