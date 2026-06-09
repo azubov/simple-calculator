@@ -2,7 +2,8 @@
 #include "StatementInitializer.h"
 
 Application::Application()
-    : pg_repository_(db_connection_)
+    : printer_(out_buf_, err_buf_)
+    , pg_repository_(db_connection_)
     , cached_repository_(pg_repository_)
 #ifdef ENABLE_CPU_LOAD
     , heavy_calculator_(simple_calculator_)
@@ -10,18 +11,17 @@ Application::Application()
 #else
     , calculator_service_(cached_repository_, simple_calculator_)
 #endif
-    , runner_(parser_, checker_, calculator_service_, printer_) {
+    , server_("tcp://*:5555")
+    , runner_(parser_, checker_, calculator_service_, printer_, server_) {
 
     StatementInitializer::prepareCalculatorStatements(db_connection_);
     cached_repository_.fillCacheFromRepository();
 }
 
-void Application::run(int argc, char* argv[]) {
-    while (is_running_.load(std::memory_order_acquire)) {
-        runner_.run(argc, argv);
-    }
+void Application::run() {
+    runner_.run();
 }
 
 void Application::stop() {
-    is_running_.store(false, std::memory_order_release);
+    runner_.stop();
 }

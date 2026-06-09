@@ -9,23 +9,26 @@
 #include "Printer.h"
 #include "Runner.h"
 #include "SimpleCalculator.h"
+#include "ZmqServer.h"
 
 #ifdef ENABLE_CPU_LOAD
 #    include "CpuHeavyCalculator.h"
 #endif
 
-#include <atomic>
+#include <sstream>
 
 class Application {
 
 public:
     Application();
-    void run(int argc, char* argv[]);
+    void run();
     void stop();
 
 private:
     Parser parser_;
     Checker checker_;
+    std::ostringstream out_buf_;
+    std::ostringstream err_buf_;
     Printer printer_;
     PGConnection db_connection_;
     PostgresCalculatorRepository pg_repository_;
@@ -35,7 +38,6 @@ private:
     CpuHeavyCalculator heavy_calculator_;
 #endif
     CalculatorService calculator_service_;
+    ZmqServer server_;
     Runner runner_;
-
-    std::atomic<bool> is_running_{true};
 };

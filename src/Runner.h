@@ -4,6 +4,9 @@
 #include "Checker.h"
 #include "Parser.h"
 #include "Printer.h"
+#include "Server.h"
+
+#include <atomic>
 
 class Runner {
 public:
@@ -11,16 +14,19 @@ public:
         const Parser& parser,
         const Checker& checker,
         CalculatorService& calculator_service,
-        const Printer& printer
+        Printer& printer,
+        Server& server
     ) noexcept;
 
-    int run(int argc, char* argv[]) const;
+    void run();
+    void stop();
 
 private:
     const Parser& parser_;
     const Checker& checker_;
     CalculatorService& calculator_service_;
-    const Printer& printer_;
+    Printer& printer_;
+    Server& server_;
 
-    bool handleHelpFlag(int argc, char* argv[]) const;
+    std::atomic<bool> is_running_{true};
 };

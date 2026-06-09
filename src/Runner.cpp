@@ -1,51 +1,51 @@
 #include "Runner.h"
-
 #include "Log.h"
-
-#include <string_view>
 
 Runner::Runner(
     const Parser& parser,
     const Checker& checker,
     CalculatorService& calculator_service,
-    const Printer& printer
+    Printer& printer,
+    Server& server
 ) noexcept
     : parser_(parser)
     , checker_(checker)
     , calculator_service_(calculator_service)
-    , printer_(printer) {}
+    , printer_(printer)
+    , server_(server) {}
 
-int Runner::run(int argc, char* argv[]) const {
+void Runner::run() {
     Log::info("Runner started");
 
-    try {
-        if (handleHelpFlag(argc, argv)) {
-            printer_.printHelp();
-
-            Log::info("Runner finished successfully");
-            return 0;
+    while (is_running_.load(std::memory_order_acquire)) {
+        try {
+            auto [has_data, msg] = server_.receive();
+            if (!has_data) {
+                continue;
+            }
+            if (msg[0] == '{') {
+                auto data = parser_.parse(msg);
+                checker_.validate(data);
+                calculator_service_.calculate(data);
+                printer_.printResult(data);
+            } else if (msg == "--help") {
+                printer_.printHelp();
+            } else {
+                printer_.printException(
+                    std::invalid_argument("Unknown argument. Use --help")
+                );
+            }
+        } catch (const std::invalid_argument& ia) {
+            printer_.printException(ia);
+        } catch (const std::overflow_error& oe) {
+            printer_.printException(oe);
         }
-
-        auto data = parser_.parse();
-        checker_.validate(data);
-        calculator_service_.calculate(data);
-        printer_.printResult(data);
-
-    } catch (const std::exception& e) {
-        printer_.printException(e);
-        Log::error("Runner finished with error");
-        throw;
+        server_.send(printer_.flush());
     }
     Log::info("Runner finished successfully");
-    return 0;
 }
 
-bool Runner::handleHelpFlag(int argc, char* argv[]) const {
-    if (argc > 1) {
-        if (std::string_view(argv[1]) == "--help") {
-            return true;
-        }
-        throw std::invalid_argument("Unknown argument. Use --help");
-    }
-    return false;
+void Runner::stop() {
+    Log::info("Stopping runner..");
+    is_running_.store(false, std::memory_order_release);
 }
