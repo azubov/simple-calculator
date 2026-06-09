@@ -6,65 +6,87 @@
 
 ## 📂 Структура проекта
 
+```bash
+tree --dirsfirst -I 'build|.*'
 ```
-simple-calculator/
+
+```
+.
+├── db
+│   ├── migrations
+│   │   ├── V1__create_schema.sql
+│   │   └── V2__create_operations_table.sql
+│   ├── docker-compose.yaml
+│   ├── start.sh
+│   └── stop.sh
+├── example
+│   └── input.json
+├── src
+│   ├── logging
+│   │   ├── Logger.h
+│   │   ├── NullLogger.h
+│   │   ├── OperationDataFormatter.h
+│   │   └── SpdLogger.h
+│   ├── Application.cpp
+│   ├── Application.h
+│   ├── CachedCalculatorRepository.cpp
+│   ├── CachedCalculatorRepository.h
+│   ├── Calculator.h
+│   ├── CalculatorRepository.h
+│   ├── CalculatorService.cpp
+│   ├── CalculatorService.h
+│   ├── Checker.cpp
+│   ├── Checker.h
+│   ├── CMakeLists.txt
+│   ├── CpuHeavyCalculator.cpp
+│   ├── CpuHeavyCalculator.h
+│   ├── Log.h
+│   ├── main.cpp
+│   ├── OperationData.h
+│   ├── Parser.cpp
+│   ├── Parser.h
+│   ├── PGConnection.cpp
+│   ├── PGConnection.h
+│   ├── PGResult.h
+│   ├── PostgresCalculatorRepository.cpp
+│   ├── PostgresCalculatorRepository.h
+│   ├── Printer.cpp
+│   ├── Printer.h
+│   ├── Runner.cpp
+│   ├── Runner.h
+│   ├── Server.h
+│   ├── SimpleCalculator.cpp
+│   ├── SimpleCalculator.h
+│   ├── StatementInitializer.cpp
+│   ├── StatementInitializer.h
+│   ├── SystemSignal.cpp
+│   ├── SystemSignal.h
+│   ├── ZmqServer.cpp
+│   └── ZmqServer.h
+├── tests
+│   ├── integration
+│   │   ├── client.cpp
+│   │   ├── CMakeLists.txt
+│   │   └── test_cases.txt
+│   ├── mocks
+│   │   ├── MockCalculator.h
+│   │   ├── MockRepository.h
+│   │   └── MockServer.h
+│   ├── cached_calculator_repository_tests.cpp
+│   ├── calculator_service_tests.cpp
+│   ├── checker_tests.cpp
+│   ├── CMakeLists.txt
+│   ├── leak_memchecked_test.cpp
+│   ├── main.cpp
+│   ├── parser_tests.cpp
+│   ├── printer_tests.cpp
+│   ├── runner_tests.cpp
+│   ├── simple_calculator_tests.cpp
+│   └── TestHelper.h
+├── calculator.service
 ├── CMakeLists.txt
 ├── CMakePresets.json
-├── README.md
-└── src/
-    └── CMakeLists.txt
-    └── logging/
-        └── Logger.h
-        └── SpdLogger.h
-        └── NullLogger.h
-        └── OperationDataFormatter.h
-    └── Log.h
-    └── OperationData.h
-    └── Runner.cpp
-    └── Runner.h
-    └── Parser.cpp
-    └── Parser.h
-    └── Checker.cpp
-    └── Checker.h
-    └── PGConnection.cpp
-    └── PGConnection.h
-    └── PGResult.h
-    └── StatementInitializer.h
-    └── StatementInitializer.cpp
-    └── CalculatorRepository.h
-    └── CachedCalculatorRepository.h
-    └── CachedCalculatorRepository.cpp
-    └── PostgresCalculatorRepository.h
-    └── PostgresCalculatorRepository.cpp
-    └── CalculatorService.cpp
-    └── CalculatorService.h
-    └── Calculator.h
-    └── SimpleCalculator.h
-    └── SimpleCalculator.cpp
-    └── CpuHeavyCalculator.h
-    └── CpuHeavyCalculator.cpp
-    └── Printer.cpp
-    └── Printer.h
-    └── main.cpp
-└── tests/
-    └── mocks/
-    └── CMakeLists.txt
-    └── runner_tests.cpp
-    └── parser_tests.cpp
-    └── checker_tests.cpp
-    └── simple_calculator_tests.cpp
-    └── calculator_service_tests.cpp
-    └── cached_calculator_repository_tests.cpp
-    └── printer_tests.cpp
-    └── leak_memchecked_test.cpp
-    └── main.cpp
-└── example/
-    └── input.json
-└── db/
-    └── migrations/
-    └── docker-compose.yaml
-    └── start.sh
-    └── stop.sh
+└── README.md
 ```
 
 ## 🚀 Возможности
@@ -119,7 +141,22 @@ ctest --preset debug --output-on-failure
 
 Запуск **debug** версии:
 ```bash
-./build/debug/calc < ./example/input.json
+./build/debug/calc
+```
+
+Остановка:
+```bash
+ps aux | grep calc
+kill -TERM <PID>
+```
+
+Запуск тестового клиента для **debug** версии
+```bash
+(cd build/debug/tests/integration && ./client)
+```
+Можно передать время стресс теста в секундах (5 сек по умолчанию)
+```bash
+(cd build/debug/tests/integration && ./client 1)
 ```
 
 Сборка **debug-valgrind** версии:
@@ -131,7 +168,13 @@ ctest --preset debug-valgrind --output-on-failure
 
 Запуск **debug-valgrind** версии:
 ```bash
-valgrind --leak-check=full --show-leak-kinds=all ./build/debug-valgrind/calc < ./example/input.json
+valgrind --leak-check=full --show-leak-kinds=all ./build/debug-valgrind/calc
+```
+
+Остановка:
+```bash
+ps aux | grep valgrind
+kill -TERM <PID>
 ```
 
 Сборка **perf** версии:
@@ -142,7 +185,7 @@ cmake --build --preset perf
 
 Запуск **perf** версии:
 ```bash
-perf record -o build/perf/perf.data -- ./build/perf/calc < ./example/input.json
+perf record -o build/perf/perf.data -- ./build/perf/calc
 ```
 
 Анализ отчета производительности **perf**:
@@ -158,7 +201,7 @@ cmake --build --preset release
 
 Запуск **release** версии:
 ```bash
-./build/release/calc < ./example/input.json
+./build/release/calc
 ```
 ## 🗄️ Запуск базы данных PostgreSQL
 
@@ -186,6 +229,12 @@ docker exec -it postgres psql -U postgres -d calc-db
 
 ```sql
 SELECT * FROM calc.operations;
+```
+
+Очистить таблицу:
+
+```sql
+TRUNCATE TABLE calc.operations;
 ```
 
 ## Systemd Support
