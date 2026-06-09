@@ -24,3 +24,9 @@ else()
     include(GoogleTest)
     gtest_discover_tests(calc_tests)
 endif()
+
+option(INTEGRATION_TESTS "Build integration client" OFF)
+
+if(INTEGRATION_TESTS)
+    add_subdirectory(integration)
+endif()

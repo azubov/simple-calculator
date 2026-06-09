@@ -1,0 +1,285 @@
+SUB|--help|This is a simple calculator!
+SUB|invalid argument|Unknown argument. Use --help
+SUB|{invalid json}|Invalid Json:
+SUB|{ "first": 999995555555, "operation": "*", "second": 999995555555 }|overflow_error
+SUB|{ "first": 41, "operation": "!" }|overflow_error
+EXACT|{ "first": 2, "operation": "+", "second": 5 }|7
+EXACT|{ "first": 4, "operation": "!" }|24
+EXACT|{ "first": 5, "operation": "+", "second": 5 }|10
+EXACT|{ "first": 5555555, "operation": "*", "second": 5555555 }|30864191358025
+EXACT|{ "first": 995555555, "operation": "*", "second": 995555555 }|991130863091358025
+EXACT|{ "first": 3, "operation": "+", "second": 5 }|8
+EXACT|{ "first": -100, "operation": "+", "second": 5 }|-95
+EXACT|{ "first": 66, "operation": "+", "second": 5 }|71
+EXACT|{ "first": 16, "operation": "+", "second": 5 }|21
+EXACT|{ "first": 17, "operation": "+", "second": 5 }|22
+EXACT|{ "first": 22, "operation": "+", "second": 5 }|27
+EXACT|{ "first": 23, "operation": "+", "second": 5 }|28
+EXACT|{ "first": 24, "operation": "+", "second": 5 }|29
+EXACT|{ "first": 456, "operation": "+", "second": 5 }|461
+EXACT|{ "first": 455, "operation": "+", "second": 5 }|460
+EXACT|{ "first": 1, "operation": "+", "second": 5 }|6
+EXACT|{ "first": 4, "operation": "+", "second": 5 }|9
+EXACT|{ "first": -2, "operation": "+", "second": 5 }|3
+EXACT|{ "first": -1, "operation": "+", "second": 4 }|3
+EXACT|{ "first": 0, "operation": "+", "second": 5 }|5
+EXACT|{ "first": 1, "operation": "+", "second": 1 }|2
+EXACT|{ "first": 1, "operation": "+", "second": 2 }|3
+EXACT|{ "first": 1, "operation": "+", "second": 3 }|4
+EXACT|{ "first": 1, "operation": "+", "second": 4 }|5
+EXACT|{ "first": 3, "operation": "+", "second": 4 }|7
+EXACT|{ "first": 2, "operation": "-", "second": 5 }|-3
+EXACT|{ "first": 2, "operation": "^", "second": 5 }|32
+EXACT|{ "first": 6, "operation": "!" }|720
+EXACT|{ "first": 10, "operation": "!" }|3628800
+EXACT|{ "first": 31, "operation": "+", "second": 5 }|36
+EXACT|{ "first": 101, "operation": "-", "second": 7 }|94
+EXACT|{ "first": 21, "operation": "*", "second": 3 }|63
+EXACT|{ "first": 101, "operation": "/", "second": 2 }|50
+EXACT|{ "first": 21, "operation": "^", "second": 3 }|9261
+EXACT|{ "first": 412, "operation": "-", "second": -7097 }|7509
+EXACT|{ "first": 51, "operation": "^", "second": 7 }|897410677851
+EXACT|{ "first": 5057, "operation": "-", "second": -996 }|6053
+EXACT|{ "first": -2160, "operation": "-", "second": -6370 }|4210
+SUB|{ "first": 23, "operation": "!" }|overflow_error
+EXACT|{ "first": 11, "operation": "^", "second": 8 }|214358881
+EXACT|{ "first": -351, "operation": "+", "second": -977 }|-1328
+EXACT|{ "first": -3613, "operation": "*", "second": 7287 }|-26327931
+EXACT|{ "first": 54, "operation": "^", "second": 7 }|1338925209984
+EXACT|{ "first": 5304, "operation": "+", "second": 9855 }|15159
+EXACT|{ "first": 66, "operation": "^", "second": 8 }|360040606269696
+EXACT|{ "first": 5396, "operation": "+", "second": 6536 }|11932
+EXACT|{ "first": -8348, "operation": "-", "second": -7314 }|-1034
+EXACT|{ "first": 9660, "operation": "-", "second": 3817 }|5843
+EXACT|{ "first": 9686, "operation": "+", "second": 217 }|9903
+EXACT|{ "first": -8004, "operation": "+", "second": -1202 }|-9206
+EXACT|{ "first": 5267, "operation": "-", "second": -4184 }|9451
+EXACT|{ "first": 7, "operation": "!" }|5040
+EXACT|{ "first": -22, "operation": "^", "second": 8 }|54875873536
+EXACT|{ "first": -10, "operation": "^", "second": 7 }|-10000000
+EXACT|{ "first": 5293, "operation": "*", "second": 1198 }|6341014
+EXACT|{ "first": 6620, "operation": "-", "second": 5074 }|1546
+EXACT|{ "first": 9322, "operation": "-", "second": -9716 }|19038
+SUB|{ "first": 90, "operation": "^", "second": 10 }|overflow_error
+EXACT|{ "first": 19, "operation": "!" }|121645100408832000
+EXACT|{ "first": -2196, "operation": "/", "second": 4825 }|0
+EXACT|{ "first": 31, "operation": "^", "second": 5 }|28629151
+EXACT|{ "first": 4900, "operation": "*", "second": -6462 }|-31663800
+EXACT|{ "first": -3527, "operation": "-", "second": 9400 }|-12927
+EXACT|{ "first": 65, "operation": "^", "second": 1 }|65
+EXACT|{ "first": -7617, "operation": "*", "second": 4353 }|-33156801
+EXACT|{ "first": -9223, "operation": "/", "second": 7806 }|-1
+EXACT|{ "first": -7550, "operation": "*", "second": -593 }|4477150
+SUB|{ "first": 25, "operation": "!" }|overflow_error
+EXACT|{ "first": -6140, "operation": "-", "second": -6748 }|608
+EXACT|{ "first": 3719, "operation": "/", "second": 6223 }|0
+EXACT|{ "first": -7099, "operation": "+", "second": -1202 }|-8301
+EXACT|{ "first": -1015, "operation": "/", "second": -1551 }|0
+EXACT|{ "first": 9552, "operation": "*", "second": -9952 }|-95061504
+EXACT|{ "first": -6002, "operation": "/", "second": 3283 }|-1
+EXACT|{ "first": 9832, "operation": "-", "second": -4382 }|14214
+EXACT|{ "first": -5670, "operation": "-", "second": 5001 }|-10671
+EXACT|{ "first": -9714, "operation": "-", "second": -1445 }|-8269
+EXACT|{ "first": 8412, "operation": "-", "second": 767 }|7645
+EXACT|{ "first": -253, "operation": "+", "second": 3613 }|3360
+EXACT|{ "first": -2440, "operation": "-", "second": -6390 }|3950
+EXACT|{ "first": -3483, "operation": "+", "second": -1451 }|-4934
+EXACT|{ "first": 8137, "operation": "+", "second": 6271 }|14408
+EXACT|{ "first": -331, "operation": "+", "second": 7326 }|6995
+EXACT|{ "first": -4600, "operation": "/", "second": -5330 }|0
+EXACT|{ "first": 4905, "operation": "/", "second": -828 }|-5
+EXACT|{ "first": 4515, "operation": "*", "second": -1491 }|-6731865
+SUB|{ "first": 84, "operation": "^", "second": 10 }|overflow_error
+EXACT|{ "first": -3266, "operation": "+", "second": 7660 }|4394
+EXACT|{ "first": 5087, "operation": "*", "second": -8127 }|-41342049
+EXACT|{ "first": -4493, "operation": "-", "second": 1092 }|-5585
+EXACT|{ "first": -4479, "operation": "/", "second": 2321 }|-1
+EXACT|{ "first": -5418, "operation": "/", "second": -7746 }|0
+EXACT|{ "first": -5819, "operation": "+", "second": -535 }|-6354
+EXACT|{ "first": -8723, "operation": "-", "second": 8346 }|-17069
+EXACT|{ "first": -8347, "operation": "/", "second": 5092 }|-1
+EXACT|{ "first": 8943, "operation": "/", "second": 1944 }|4
+EXACT|{ "first": -4313, "operation": "*", "second": -3739 }|16126307
+EXACT|{ "first": -2160, "operation": "+", "second": -3907 }|-6067
+EXACT|{ "first": 4906, "operation": "+", "second": -1231 }|3675
+EXACT|{ "first": 6810, "operation": "*", "second": 5262 }|35834220
+EXACT|{ "first": 94, "operation": "^", "second": 2 }|8836
+EXACT|{ "first": 1344, "operation": "+", "second": -5670 }|-4326
+EXACT|{ "first": 4016, "operation": "/", "second": 3392 }|1
+EXACT|{ "first": 4945, "operation": "-", "second": -274 }|5219
+EXACT|{ "first": 8, "operation": "!" }|40320
+EXACT|{ "first": 15, "operation": "!" }|1307674368000
+EXACT|{ "first": 62, "operation": "^", "second": 10 }|839299365868340224
+EXACT|{ "first": 6432, "operation": "/", "second": -5560 }|-1
+EXACT|{ "first": -8871, "operation": "-", "second": 221 }|-9092
+EXACT|{ "first": -6507, "operation": "/", "second": 3087 }|-2
+SUB|{ "first": -2, "operation": "!" }|invalid_argument
+EXACT|{ "first": -5658, "operation": "+", "second": 3317 }|-2341
+EXACT|{ "first": -8127, "operation": "+", "second": 1373 }|-6754
+EXACT|{ "first": 5, "operation": "!" }|120
+EXACT|{ "first": -4814, "operation": "/", "second": 9324 }|0
+EXACT|{ "first": -8612, "operation": "*", "second": -1562 }|13451944
+SUB|{ "first": -3, "operation": "!" }|invalid_argument
+EXACT|{ "first": -7630, "operation": "/", "second": 2026 }|-3
+EXACT|{ "first": 14, "operation": "!" }|87178291200
+EXACT|{ "first": -8818, "operation": "+", "second": -3430 }|-12248
+EXACT|{ "first": 31, "operation": "^", "second": 4 }|923521
+EXACT|{ "first": 8395, "operation": "+", "second": -1717 }|6678
+EXACT|{ "first": -1018, "operation": "/", "second": -2240 }|0
+EXACT|{ "first": -1877, "operation": "+", "second": 4443 }|2566
+EXACT|{ "first": -6703, "operation": "*", "second": -7099 }|47584597
+EXACT|{ "first": -7647, "operation": "-", "second": -2924 }|-4723
+EXACT|{ "first": 6052, "operation": "+", "second": 4272 }|10324
+EXACT|{ "first": -9729, "operation": "+", "second": 2244 }|-7485
+EXACT|{ "first": -6400, "operation": "+", "second": 3209 }|-3191
+EXACT|{ "first": -1416, "operation": "/", "second": 2221 }|0
+EXACT|{ "first": 4905, "operation": "-", "second": -5611 }|10516
+EXACT|{ "first": -1390, "operation": "+", "second": 200 }|-1190
+SUB|{ "first": -4, "operation": "!" }|invalid_argument
+EXACT|{ "first": 80, "operation": "^", "second": 0 }|1
+EXACT|{ "first": 18, "operation": "!" }|6402373705728000
+EXACT|{ "first": -3141, "operation": "-", "second": -6226 }|3085
+EXACT|{ "first": 5351, "operation": "/", "second": 3290 }|1
+EXACT|{ "first": 5013, "operation": "+", "second": -3972 }|1041
+EXACT|{ "first": -6343, "operation": "+", "second": 9324 }|2981
+SUB|{ "first": 34, "operation": "^", "second": -1 }|invalid_argument
+EXACT|{ "first": 8055, "operation": "/", "second": 5046 }|1
+EXACT|{ "first": 8393, "operation": "-", "second": 541 }|7852
+EXACT|{ "first": -8434, "operation": "-", "second": 3662 }|-12096
+EXACT|{ "first": 7618, "operation": "-", "second": -1877 }|9495
+SUB|{ "first": 22, "operation": "!" }|overflow_error
+EXACT|{ "first": -9223, "operation": "/", "second": 2353 }|-3
+EXACT|{ "first": 65, "operation": "^", "second": 8 }|318644812890625
+EXACT|{ "first": -4604, "operation": "-", "second": 3613 }|-8217
+EXACT|{ "first": -7636, "operation": "-", "second": 4515 }|-12151
+EXACT|{ "first": 12345, "operation": "+", "second": 67890 }|80235
+EXACT|{ "first": -54321, "operation": "+", "second": 123456 }|69135
+EXACT|{ "first": 999999, "operation": "-", "second": 888888 }|111111
+EXACT|{ "first": -250000, "operation": "-", "second": 750000 }|-1000000
+EXACT|{ "first": 1234, "operation": "*", "second": 567 }|699678
+EXACT|{ "first": -999, "operation": "*", "second": 321 }|-320679
+EXACT|{ "first": 500000, "operation": "/", "second": 200000 }|2
+EXACT|{ "first": -999999, "operation": "/", "second": 100000 }|-9
+EXACT|{ "first": 12, "operation": "^", "second": 5 }|248832
+EXACT|{ "first": 7, "operation": "^", "second": 8 }|5764801
+EXACT|{ "first": 0, "operation": "!" }|1
+EXACT|{ "first": 1, "operation": "!" }|1
+EXACT|{ "first": 2, "operation": "!" }|2
+EXACT|{ "first": 3, "operation": "!" }|6
+EXACT|{ "first": 9, "operation": "!" }|362880
+EXACT|{ "first": 11, "operation": "!" }|39916800
+EXACT|{ "first": 12, "operation": "!" }|479001600
+EXACT|{ "first": 13, "operation": "!" }|6227020800
+EXACT|{ "first": 16, "operation": "!" }|20922789888000
+EXACT|{ "first": 17, "operation": "!" }|355687428096000
+EXACT|{ "first": 20, "operation": "!" }|2432902008176640000
+SUB|{ "first": 21, "operation": "!" }|overflow_error
+EXACT|{ "first": 500000, "operation": "+", "second": 123456 }|623456
+EXACT|{ "first": -1000000, "operation": "+", "second": 999999 }|-1
+EXACT|{ "first": 345678, "operation": "-", "second": 123456 }|222222
+EXACT|{ "first": -777777, "operation": "-", "second": -222222 }|-555555
+EXACT|{ "first": 123, "operation": "*", "second": 456 }|56088
+EXACT|{ "first": -123, "operation": "*", "second": -456 }|56088
+EXACT|{ "first": 999999, "operation": "/", "second": 3 }|333333
+EXACT|{ "first": -500000, "operation": "/", "second": 7 }|-71428
+EXACT|{ "first": 15, "operation": "^", "second": 4 }|50625
+EXACT|{ "first": 2, "operation": "^", "second": 20 }|1048576
+EXACT|{ "first": 3, "operation": "^", "second": 12 }|531441
+EXACT|{ "first": 4, "operation": "^", "second": 10 }|1048576
+EXACT|{ "first": 25, "operation": "^", "second": 5 }|9765625
+EXACT|{ "first": 999, "operation": "+", "second": 1 }|1000
+EXACT|{ "first": -999, "operation": "+", "second": -1 }|-1000
+EXACT|{ "first": 1000000, "operation": "-", "second": 1 }|999999
+EXACT|{ "first": -1000000, "operation": "-", "second": -1 }|-999999
+EXACT|{ "first": 12345, "operation": "*", "second": -10 }|-123450
+EXACT|{ "first": -54321, "operation": "*", "second": 10 }|-543210
+EXACT|{ "first": 888888, "operation": "/", "second": 2 }|444444
+EXACT|{ "first": -888888, "operation": "/", "second": 2 }|-444444
+EXACT|{ "first": 9, "operation": "^", "second": 6 }|531441
+EXACT|{ "first": 11, "operation": "^", "second": 5 }|161051
+EXACT|{ "first": 13, "operation": "^", "second": 4 }|28561
+EXACT|{ "first": 17, "operation": "^", "second": 3 }|4913
+EXACT|{ "first": 19, "operation": "^", "second": 2 }|361
+EXACT|{ "first": 123456, "operation": "+", "second": 654321 }|777777
+EXACT|{ "first": -654321, "operation": "+", "second": 123456 }|-530865
+EXACT|{ "first": 777777, "operation": "-", "second": 111111 }|666666
+EXACT|{ "first": -777777, "operation": "-", "second": 111111 }|-888888
+EXACT|{ "first": 222222, "operation": "*", "second": 3 }|666666
+EXACT|{ "first": -222222, "operation": "*", "second": 3 }|-666666
+EXACT|{ "first": 999999, "operation": "/", "second": 9 }|111111
+EXACT|{ "first": -999999, "operation": "/", "second": 9 }|-111111
+EXACT|{ "first": 6, "operation": "^", "second": 8 }|1679616
+EXACT|{ "first": 8, "operation": "^", "second": 6 }|262144
+EXACT|{ "first": 10, "operation": "^", "second": 6 }|1000000
+EXACT|{ "first": 2, "operation": "^", "second": 19 }|524288
+EXACT|{ "first": 3, "operation": "^", "second": 10 }|59049
+EXACT|{ "first": 4, "operation": "^", "second": 9 }|262144
+EXACT|{ "first": 5, "operation": "^", "second": 8 }|390625
+EXACT|{ "first": 6, "operation": "^", "second": 7 }|279936
+EXACT|{ "first": 7, "operation": "^", "second": 6 }|117649
+EXACT|{ "first": 8, "operation": "^", "second": 5 }|32768
+EXACT|{ "first": 9, "operation": "^", "second": 4 }|6561
+EXACT|{ "first": 10, "operation": "^", "second": 5 }|100000
+EXACT|{ "first": 11, "operation": "^", "second": 4 }|14641
+EXACT|{ "first": 12, "operation": "^", "second": 4 }|20736
+EXACT|{ "first": 13, "operation": "^", "second": 3 }|2197
+EXACT|{ "first": 14, "operation": "^", "second": 3 }|2744
+EXACT|{ "first": 15, "operation": "^", "second": 3 }|3375
+EXACT|{ "first": 16, "operation": "^", "second": 3 }|4096
+EXACT|{ "first": 17, "operation": "^", "second": 2 }|289
+EXACT|{ "first": 18, "operation": "^", "second": 2 }|324
+EXACT|{ "first": 20, "operation": "^", "second": 2 }|400
+EXACT|{ "first": 123456, "operation": "+", "second": -654321 }|-530865
+EXACT|{ "first": -500000, "operation": "+", "second": 250000 }|-250000
+EXACT|{ "first": 750000, "operation": "-", "second": 250000 }|500000
+EXACT|{ "first": -750000, "operation": "-", "second": -250000 }|-500000
+EXACT|{ "first": 123456, "operation": "*", "second": 6 }|740736
+EXACT|{ "first": -123456, "operation": "*", "second": 6 }|-740736
+EXACT|{ "first": 999999, "operation": "/", "second": 4 }|249999
+EXACT|{ "first": -999999, "operation": "/", "second": 4 }|-249999
+EXACT|{ "first": 21, "operation": "^", "second": 4 }|194481
+EXACT|{ "first": 22, "operation": "^", "second": 3 }|10648
+EXACT|{ "first": 23, "operation": "^", "second": 3 }|12167
+EXACT|{ "first": 24, "operation": "^", "second": 3 }|13824
+EXACT|{ "first": 25, "operation": "^", "second": 3 }|15625
+EXACT|{ "first": 26, "operation": "^", "second": 2 }|676
+EXACT|{ "first": 27, "operation": "^", "second": 2 }|729
+EXACT|{ "first": 28, "operation": "^", "second": 2 }|784
+EXACT|{ "first": 29, "operation": "^", "second": 2 }|841
+EXACT|{ "first": 30, "operation": "^", "second": 2 }|900
+EXACT|{ "first": 100000, "operation": "+", "second": 234567 }|334567
+EXACT|{ "first": -100000, "operation": "+", "second": 234567 }|134567
+EXACT|{ "first": 500000, "operation": "-", "second": 123456 }|376544
+EXACT|{ "first": -500000, "operation": "-", "second": 123456 }|-623456
+EXACT|{ "first": 123456, "operation": "*", "second": 3 }|370368
+EXACT|{ "first": -123456, "operation": "*", "second": 3 }|-370368
+EXACT|{ "first": 888888, "operation": "/", "second": 3 }|296296
+EXACT|{ "first": -888888, "operation": "/", "second": 3 }|-296296
+EXACT|{ "first": 31, "operation": "^", "second": 3 }|29791
+EXACT|{ "first": 32, "operation": "^", "second": 3 }|32768
+EXACT|{ "first": 33, "operation": "^", "second": 3 }|35937
+EXACT|{ "first": 34, "operation": "^", "second": 3 }|39304
+EXACT|{ "first": 35, "operation": "^", "second": 3 }|42875
+EXACT|{ "first": 36, "operation": "^", "second": 2 }|1296
+EXACT|{ "first": 37, "operation": "^", "second": 2 }|1369
+EXACT|{ "first": 38, "operation": "^", "second": 2 }|1444
+EXACT|{ "first": 39, "operation": "^", "second": 2 }|1521
+EXACT|{ "first": 40, "operation": "^", "second": 2 }|1600
+EXACT|{ "first": 123456, "operation": "+", "second": 111111 }|234567
+EXACT|{ "first": -123456, "operation": "+", "second": -111111 }|-234567
+EXACT|{ "first": 654321, "operation": "-", "second": 123456 }|530865
+EXACT|{ "first": -654321, "operation": "-", "second": 123456 }|-777777
+EXACT|{ "first": 222222, "operation": "*", "second": 4 }|888888
+EXACT|{ "first": -222222, "operation": "*", "second": 4 }|-888888
+EXACT|{ "first": 999999, "operation": "/", "second": 5 }|199999
+EXACT|{ "first": -999999, "operation": "/", "second": 5 }|-199999
+EXACT|{ "first": 41, "operation": "^", "second": 3 }|68921
+EXACT|{ "first": 42, "operation": "^", "second": 3 }|74088
+EXACT|{ "first": 43, "operation": "^", "second": 3 }|79507
+EXACT|{ "first": 44, "operation": "^", "second": 3 }|85184
+EXACT|{ "first": 45, "operation": "^", "second": 3 }|91125
+EXACT|{ "first": 46, "operation": "^", "second": 2 }|2116
+EXACT|{ "first": 47, "operation": "^", "second": 2 }|2209
+EXACT|{ "first": 48, "operation": "^", "second": 2 }|2304
+EXACT|{ "first": 49, "operation": "^", "second": 2 }|2401
+EXACT|{ "first": 50, "operation": "^", "second": 2 }|2500
