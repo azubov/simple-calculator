@@ -27,7 +27,7 @@ TEST(PrinterTest, PrintExceptionWritesToErrStream) {
     std::runtime_error ex("error");
     printer.printException(ex);
 
-    EXPECT_EQ(err.str(), "error\n");
+    EXPECT_EQ(err.str(), "Error: error\n");
     EXPECT_TRUE(out.str().empty());
 }
 

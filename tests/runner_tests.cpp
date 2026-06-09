@@ -3,95 +3,90 @@
 
 #include "mocks/MockCalculator.h"
 #include "mocks/MockRepository.h"
+#include "mocks/MockServer.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <sstream>
 
 using ::testing::_;
+using ::testing::HasSubstr;
 using ::testing::Invoke;
-using ::testing::Throw;
+using ::testing::Not;
+using ::testing::Return;
+using ::testing::SaveArg;
 
-TEST(RunnerTests, PrintsHelpAndExits) {
-    std::istringstream in("");
-    std::ostringstream out;
-
-    Parser parser(in);
+class RunnerTests : public ::testing::Test {
+protected:
+    Parser parser;
     Checker checker;
     MockRepository calculator_repository;
     MockCalculator calculator;
-    CalculatorService calculator_service(calculator_repository, calculator);
-    Printer printer(out, out);
-    Runner runner(parser, checker, calculator_service, printer);
+    CalculatorService calculator_service{calculator_repository, calculator};
 
-    char* argv[] = {(char*)"calc", (char*)"--help"};
+    std::ostringstream dummy_out;
+    std::ostringstream dummy_err;
+    Printer printer{dummy_out, dummy_err};
 
-    int code = runner.run(2, argv);
+    MockServer server;
+    Runner runner{parser, checker, calculator_service, printer, server};
+};
 
-    EXPECT_EQ(code, 0);
-    EXPECT_NE(
-        out.str().find("This is a simple calculator!"), std::string::npos
-    );
+TEST_F(RunnerTests, PrintsHelp) {
+    std::string sent_msg;
+
+    EXPECT_CALL(server, receive())
+        .WillOnce(Return(std::make_pair(true, "--help")))
+        .WillOnce(Invoke([this]() {
+            runner.stop();
+            return std::make_pair(false, std::string{});
+        }));
+
+    EXPECT_CALL(server, send(_)).WillOnce(SaveArg<0>(&sent_msg));
+
+    runner.run();
+
+    EXPECT_THAT(sent_msg, HasSubstr("This is a simple calculator!"));
+    EXPECT_THAT(sent_msg, Not(HasSubstr("Error")));
 }
 
-TEST(RunnerTests, UnknownArgumentProducesError) {
-    std::istringstream in("");
-    std::ostringstream out;
+TEST_F(RunnerTests, UnknownArgumentTriggersException) {
+    std::string sent_msg;
 
-    Parser parser(in);
-    Checker checker;
-    MockRepository calculator_repository;
-    MockCalculator calculator;
-    CalculatorService calculator_service(calculator_repository, calculator);
-    Printer printer(out, out);
-    Runner runner(parser, checker, calculator_service, printer);
+    EXPECT_CALL(server, receive())
+        .WillOnce(Return(std::make_pair(true, "--unknown")))
+        .WillOnce(Invoke([this]() {
+            runner.stop();
+            return std::make_pair(false, std::string{});
+        }));
 
-    char* argv[] = {(char*)"calc", (char*)"--unknown"};
+    EXPECT_CALL(server, send(_)).WillOnce(SaveArg<0>(&sent_msg));
 
-    EXPECT_THROW(runner.run(2, argv), std::invalid_argument);
+    runner.run();
+
+    EXPECT_THAT(sent_msg, HasSubstr("Unknown argument. Use --help"));
 }
 
-TEST(RunnerTests, SuccessfulRun) {
-    std::istringstream in(R"({ "first": 3, "operation": "+", "second": 4 })");
-    std::ostringstream out;
+TEST_F(RunnerTests, SuccessfulRun) {
+    std::string sent_msg;
+    std::string json_input = R"({ "first": 3, "operation": "+", "second": 4 })";
 
-    Parser parser(in);
-    Checker checker;
-    MockRepository calculator_repository;
-    MockCalculator calculator;
-    CalculatorService calculator_service(calculator_repository, calculator);
-    Printer printer(out, out);
-    Runner runner(parser, checker, calculator_service, printer);
+    EXPECT_CALL(server, receive())
+        .WillOnce(Return(std::make_pair(true, json_input)))
+        .WillOnce(Invoke([this]() {
+            runner.stop();
+            return std::make_pair(false, std::string{});
+        }));
 
     EXPECT_CALL(calculator_repository, find(_)).Times(1);
-
     EXPECT_CALL(calculator, calculate(_)).WillOnce(Invoke([](OperationData& d) {
         d.result = 7;
     }));
-
     EXPECT_CALL(calculator_repository, save(_)).Times(1);
 
-    char* argv[] = {(char*)"calc"};
+    EXPECT_CALL(server, send(_)).WillOnce(SaveArg<0>(&sent_msg));
 
-    int code = runner.run(1, argv);
+    runner.run();
 
-    EXPECT_EQ(code, 0);
-    EXPECT_NE(out.str().find('7'), std::string::npos);
-}
-
-TEST(RunnerTests, InvalidJsonTriggersException) {
-    std::istringstream in("{ invalid json }");
-    std::ostringstream out;
-
-    Parser parser(in);
-    Checker checker;
-    MockRepository calculator_repository;
-    MockCalculator calculator;
-    CalculatorService calculator_service(calculator_repository, calculator);
-    Printer printer(out, out);
-    Runner runner(parser, checker, calculator_service, printer);
-
-    char* argv[] = {(char*)"calc"};
-
-    EXPECT_THROW(runner.run(1, argv), std::exception);
+    EXPECT_THAT(sent_msg, HasSubstr("7"));
+    EXPECT_THAT(sent_msg, Not(HasSubstr("Error")));
 }
