@@ -2,16 +2,20 @@
 
 #include "Log.h"
 
+#include <exception>
+
+#include <fmt/format.h>
 #include <nlohmann/json.hpp>
 
-Parser::Parser(std::istream& in) noexcept
-    : in_(in) {}
-
-OperationData Parser::parse() const {
-    Log::info("Staring to parse input..");
+OperationData Parser::parse(const std::string& msg) const {
+    Log::info("Starting to parse input..");
 
     nlohmann::json json;
-    in_ >> json;
+    try {
+        json = nlohmann::json::parse(msg);
+    } catch (const std::exception& ex) {
+        throw std::invalid_argument(fmt::format("Invalid Json: {}", ex.what()));
+    }
 
     OperationData data;
 
@@ -23,9 +27,11 @@ OperationData Parser::parse() const {
     if (!json.contains("operation") || !json["operation"].is_string()) {
         throw std::invalid_argument("Field 'operation' must be a string");
     }
-    const auto& op = json["operation"].get_ref<const std::string&>();
+    std::string op = json["operation"].get<std::string>();
     if (op.size() != 1) {
-        throw std::invalid_argument("Field 'operation' must be a single character");
+        throw std::invalid_argument(
+            "Field 'operation' must be a single character"
+        );
     }
     data.operation = op[0];
 

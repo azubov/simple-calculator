@@ -1,4 +1,5 @@
 #include "SystemSignal.h"
+#include "Log.h"
 
 #include <csignal>
 #include <systemd/sd-daemon.h>
@@ -17,9 +18,11 @@ SystemSignal::SystemSignal(
 }
 
 void SystemSignal::listen() {
+    Log::info("Listening for the signal..");
     int sig = 0;
     sigwait(&mask_, &sig);
     sd_notify(0, "STOPPING=1");
+    Log::info("Signal received");
     on_signal_action_();
 }
 
