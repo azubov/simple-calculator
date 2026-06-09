@@ -12,6 +12,7 @@ add_library(calc_lib
     Printer.cpp
     Application.cpp
     SystemSignal.cpp
+    ZmqServer.cpp
 )
 target_include_directories(calc_lib PUBLIC 
     ${mathlib_SOURCE_DIR}/include
@@ -22,12 +23,14 @@ target_include_directories(calc_lib PUBLIC
 find_package(nlohmann_json REQUIRED) 
 find_package(spdlog REQUIRED)
 find_package(PostgreSQL REQUIRED)
+find_package(cppzmq REQUIRED)
 
 target_link_libraries(calc_lib PUBLIC 
     mathlib
     nlohmann_json::nlohmann_json
     spdlog::spdlog
     PostgreSQL::PostgreSQL
+    cppzmq
 )
 
 option(ENABLE_CPU_LOAD "Enable calculator with cpu load" OFF)
