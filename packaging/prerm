@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+
+# Останавливаем сервис
+if systemctl is-active --quiet calculator.service; then
+    systemctl stop calculator.service
+fi
+
+# Отключаем автозапуск
+if systemctl is-enabled --quiet calculator.service; then
+    systemctl disable calculator.service
+fi
+
+systemctl daemon-reload
+
+echo "calculator service stopped."

@@ -5,10 +5,18 @@
 #include <spdlog/logger.h>
 #include <spdlog/sinks/basic_file_sink.h>
 
+#include <cstdlib>
+#include <string>
+
 class SpdLogger : public Logger {
 public:
     explicit SpdLogger() {
-        logger_ = spdlog::basic_logger_mt("calc_logger", "calculator.log");
+        const char* env = std::getenv("CALC_LOG_PATH");
+        const std::string path = (env != nullptr && env[0] != '\0')
+                                     ? std::string(env)
+                                     : "calculator.log";
+
+        logger_ = spdlog::basic_logger_mt("calc_logger", path);
         logger_->set_level(spdlog::level::debug);
         logger_->flush_on(spdlog::level::info);
         logger_->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [Thread ID=%t] [%l] %v");

@@ -48,3 +48,68 @@ if(CALCLIB_BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
 endif()
+
+# ═════════════════════════════════════════════════════════════════════════════
+# Установка
+# ═════════════════════════════════════════════════════════════════════════════
+
+# Бинарник → /usr/bin/calc
+install(TARGETS calc
+    RUNTIME DESTINATION bin
+)
+
+install(TARGETS calc_lib
+    LIBRARY DESTINATION lib
+)
+
+install(TARGETS mathlib
+    LIBRARY DESTINATION lib
+)
+
+# systemd unit → /lib/systemd/system/calculator.service
+install(FILES calculator.service
+    DESTINATION lib/systemd/system
+)
+
+# Пример конфига → /etc/calculator/input.json  (документация/defaults)
+install(FILES example/input.json
+    DESTINATION etc/calculator
+    RENAME input.json.example
+)
+
+# ═════════════════════════════════════════════════════════════════════════════
+# CPack — deb-пакет
+# ═════════════════════════════════════════════════════════════════════════════
+set(CPACK_GENERATOR "DEB")
+
+# Основные метаданные пакета
+set(CPACK_PACKAGE_NAME           "simple-calculator")
+set(CPACK_PACKAGE_VERSION        "1.0.0")
+set(CPACK_PACKAGE_RELEASE        "1")
+set(CPACK_PACKAGE_CONTACT        "https://github.com/azubov")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
+    "Simple integer calculator service over ZMQ")
+set(CPACK_PACKAGE_DESCRIPTION
+    "Calculator daemon that accepts JSON requests via ZeroMQ,\n"
+    " stores results in PostgreSQL and runs as a systemd service.")
+
+# DEB-специфичные поля
+set(CPACK_DEBIAN_PACKAGE_SECTION  "utils")
+set(CPACK_DEBIAN_PACKAGE_PRIORITY "optional")
+set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")   # или ${CMAKE_SYSTEM_PROCESSOR}
+
+# Автоматический поиск рантайм-зависимостей (libc, libpq, libzmq и т.д.)
+set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+
+# Скрипты сопровождения пакета (postinst / prerm)
+set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
+    "${CMAKE_CURRENT_SOURCE_DIR}/packaging/postinst"
+    "${CMAKE_CURRENT_SOURCE_DIR}/packaging/prerm"
+)
+
+# Имя выходного файла: simple-calculator-1.0.0-amd64.deb
+set(CPACK_PACKAGE_FILE_NAME
+    "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}"
+)
+
+include(CPack)

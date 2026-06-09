@@ -1,93 +1,41 @@
 # Simple Calculator
 
-Простой калькулятор на C++ для работы с целыми числами (`std::int64_t`).  
-Использует библиотеку [mathlib](https://github.com/azubov/mathlib) для безопасных математических операций с проверкой переполнений и ошибок.  
-Поддерживает сохранение и поиск операций в `PostgreSQL`.
+Простой калькулятор на `C++` для работы с целыми числами (`std::int64_t`).  
+Сервис принимает `JSON`‑запросы по `ZeroMQ`, выполняет безопасные математические операции, кеширует результаты в `PostgreSQL` и работает как `systemd‑демон`.  
+Использует библиотеку [mathlib](https://github.com/azubov/mathlib) для безопасных вычислений с защитой от переполнений.
 
 ## 📂 Структура проекта
 
+```
+.
+├── db/                     # PostgreSQL + миграции
+├── example/                # Примеры входных данных
+├── packaging/              # postinst/prerm для DEB-пакета
+├── src/                    # Исходный код приложения
+├── tests/                  # Unit и integration тесты
+├── calculator.service      # systemd unit
+├── CMakeLists.txt          # корневой CMake
+├── CMakePresets.json       # пресеты сборки
+└── README.md
+```
+Подробнее:
 ```bash
 tree --dirsfirst -I 'build|.*'
 ```
 
-```
-.
-├── db
-│   ├── migrations
-│   │   ├── V1__create_schema.sql
-│   │   └── V2__create_operations_table.sql
-│   ├── docker-compose.yaml
-│   ├── start.sh
-│   └── stop.sh
-├── example
-│   └── input.json
-├── src
-│   ├── logging
-│   │   ├── Logger.h
-│   │   ├── NullLogger.h
-│   │   ├── OperationDataFormatter.h
-│   │   └── SpdLogger.h
-│   ├── Application.cpp
-│   ├── Application.h
-│   ├── CachedCalculatorRepository.cpp
-│   ├── CachedCalculatorRepository.h
-│   ├── Calculator.h
-│   ├── CalculatorRepository.h
-│   ├── CalculatorService.cpp
-│   ├── CalculatorService.h
-│   ├── Checker.cpp
-│   ├── Checker.h
-│   ├── CMakeLists.txt
-│   ├── CpuHeavyCalculator.cpp
-│   ├── CpuHeavyCalculator.h
-│   ├── Log.h
-│   ├── main.cpp
-│   ├── OperationData.h
-│   ├── Parser.cpp
-│   ├── Parser.h
-│   ├── PGConnection.cpp
-│   ├── PGConnection.h
-│   ├── PGResult.h
-│   ├── PostgresCalculatorRepository.cpp
-│   ├── PostgresCalculatorRepository.h
-│   ├── Printer.cpp
-│   ├── Printer.h
-│   ├── Runner.cpp
-│   ├── Runner.h
-│   ├── Server.h
-│   ├── SimpleCalculator.cpp
-│   ├── SimpleCalculator.h
-│   ├── StatementInitializer.cpp
-│   ├── StatementInitializer.h
-│   ├── SystemSignal.cpp
-│   ├── SystemSignal.h
-│   ├── ZmqServer.cpp
-│   └── ZmqServer.h
-├── tests
-│   ├── integration
-│   │   ├── client.cpp
-│   │   ├── CMakeLists.txt
-│   │   └── test_cases.txt
-│   ├── mocks
-│   │   ├── MockCalculator.h
-│   │   ├── MockRepository.h
-│   │   └── MockServer.h
-│   ├── cached_calculator_repository_tests.cpp
-│   ├── calculator_service_tests.cpp
-│   ├── checker_tests.cpp
-│   ├── CMakeLists.txt
-│   ├── leak_memchecked_test.cpp
-│   ├── main.cpp
-│   ├── parser_tests.cpp
-│   ├── printer_tests.cpp
-│   ├── runner_tests.cpp
-│   ├── simple_calculator_tests.cpp
-│   └── TestHelper.h
-├── calculator.service
-├── CMakeLists.txt
-├── CMakePresets.json
-└── README.md
-```
+## 🧩 Архитектура
+Основные компоненты:
+| Компонент | Назначение |
+| --- | --- |
+| **Parser** | парсинг JSON |
+| **Checker** | валидация данных |
+| **CalculatorService** | кеш + вычисления |
+| **SimpleCalculator / CpuHeavyCalculator** | реализация операций |
+| **PostgresCalculatorRepository** | сохранение результатов |
+| **ZmqServer** | ZeroMQ REP‑сервер |
+| **Runner** | главный цикл обработки запросов |
+| **Printer** | форматирование ответа |
+| **Application** | инициализация и запуск сервиса |
 
 ## 🚀 Возможности
 
@@ -103,20 +51,23 @@ tree --dirsfirst -I 'build|.*'
 Все операции выполняются с проверкой переполнений.  
 Результаты вычислений сохраняются в `PostgreSQL`, чтобы избежать повторных вычислений.
 
-## 🧩 Пример использования
+## 🧩 Протокол взаимодействия (ZeroMQ)
+
+Сервис работает как REP‑сокет на `tcp://*:5555`  
+Клиент отправляет строку `JSON`:
 
 ```bash
-./calc 3 + 5      # 8
-./calc 10 - 7     # 3
-./calc 2 * 3      # 6
-./calc 10 / 2     # 5
-./calc 2 ^ 3      # 8
-./calc 4 !        # 24
+{ "first": 3,  "operation": "+", "second": 5 }      # 8
+{ "first": 10, "operation": "-", "second": 7 }      # 3
+{ "first": 2,  "operation": "*", "second": 3 }      # 6
+{ "first": 10, "operation": "/", "second": 2 }      # 5
+{ "first": 2,  "operation": "^", "second": 3 }      # 8
+{ "first": 4,  "operation": "1" }                   # 24
 ```
 
 Справка по командам:
 ```bash
-./calc --help
+--help
 ```
 
 ## 🛠️ Сборка через CMakePresets
@@ -125,7 +76,7 @@ tree --dirsfirst -I 'build|.*'
 
 ### Доступные пресеты
 
-- **debug** — сборка в режиме `Debug`, включает тесты, `clang-tidy`, строгие предупреждения (`-Wall -Wextra -Wpedantic -Werror`) и санитайзеры (`address`, `undefined`).
+- **debug** — сборка в режиме `Debug`, включает тесты, тестовый клиент, `clang-tidy`, строгие предупреждения (`-Wall -Wextra -Wpedantic -Werror`) и санитайзеры (`address`, `undefined`).
 - **debug-valgrind** — сборка в режиме `Debug`, включает тесты и запускает их под `Valgrind` с расширенной проверкой утечек памяти.
 - **perf** — оптимизированная сборка для анализа производительности приложения с использованием утилиты `perf`. Без тестов, без предупреждений компилятора.
 - **release** — оптимизированная сборка в режиме `Release`, без тестов, с мягкими предупреждениями.
@@ -144,10 +95,9 @@ ctest --preset debug --output-on-failure
 ./build/debug/calc
 ```
 
-Остановка:
+Логи:
 ```bash
-ps aux | grep calc
-kill -TERM <PID>
+tail -f ./build/debug/calculator.log
 ```
 
 Запуск тестового клиента для **debug** версии
@@ -157,6 +107,12 @@ kill -TERM <PID>
 Можно передать время стресс теста в секундах (5 сек по умолчанию)
 ```bash
 (cd build/debug/tests/integration && ./client 1)
+```
+
+Остановка:
+```bash
+ps aux | grep calc
+kill -TERM <PID>
 ```
 
 Сборка **debug-valgrind** версии:
@@ -238,6 +194,7 @@ TRUNCATE TABLE calc.operations;
 ```
 
 ## Systemd Support
+## Ручная установка
 
 Проект включает готовую конфигурацию `calculator.service` для запуска в режиме демона Linux.
 
@@ -269,4 +226,45 @@ sudo systemctl restart calculator
 ### 6. Остановка
 ```bash
 sudo systemctl stop calculator
+```
+
+### 7. Удаление unit-файла
+```bash
+sudo rm /etc/systemd/system/calculator.service
+```
+
+## Systemd Support
+## Установка DEB-пакета с помощью CPack
+
+### 1. Сборка проекта в **release-режиме**
+```bash
+cmake --preset release
+cmake --build --preset release
+```
+
+### 2. Сборка DEB-пакета с помощью CPack:
+```bash
+(cd build/release && cpack)
+```
+Результат: `simple-calculator-1.0.0-amd64.deb`
+
+### 3. Проверить содержимое пакета (без установки)
+```bash
+(cd build/release && dpkg-deb --contents simple-calculator-1.0.0-amd64.deb)
+```
+
+### 4. Установка и запуск:
+Перед выполнением команды нужно убедиться что БД `Postgres` запущена
+```bash
+(cd build/release && sudo dpkg -i simple-calculator-1.0.0-amd64.deb)
+```
+
+### 5. Удаление:
+```bash
+sudo dpkg -r simple-calculator
+```
+
+## Лог приложения при запуске через Systemd
+```bash
+tail -f /var/lib/calculator/calculator.log
 ```

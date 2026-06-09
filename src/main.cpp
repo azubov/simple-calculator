@@ -8,8 +8,8 @@
 #include <thread>
 
 int main() {
+    Log::setLogger(std::make_shared<SpdLogger>());
     try {
-        Log::setLogger(std::make_shared<SpdLogger>());
         Log::info("Starting application..");
         Application app;
         SystemSignal sys_signal{{SIGTERM, SIGINT}, [&app] {

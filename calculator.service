@@ -1,11 +1,18 @@
 [Unit]
-Description=Calculator
-After=network.target
+Description=Simple Calculator Service
+After=network.target postgresql.service
+Wants=postgresql.service
 
 [Service]
 Type=notify
-WorkingDirectory=/home/artem/CLionProjects/simple-calculator/build/debug
-ExecStart=/home/artem/CLionProjects/simple-calculator/build/debug/calc
+ExecStart=/usr/bin/calc
+
+# Директория для логов создаётся автоматически systemd (см. ниже)
+Environment=CALC_LOG_PATH=/var/lib/calculator/calculator.log
+
+# systemd создаст /var/lib/calculator/ с нужными правами перед стартом
+LogsDirectory=calculator
+LogsDirectoryMode=0777
 
 [Install]
 WantedBy=multi-user.target
