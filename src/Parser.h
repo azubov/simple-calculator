@@ -2,15 +2,9 @@
 
 #include "OperationData.h"
 
-#include "istream"
-#include <iostream>
+#include <string>
 
 class Parser {
 public:
-    explicit Parser(std::istream& in = std::cin) noexcept;
-
-    OperationData parse() const;
-
-private:
-    std::istream& in_;
+    OperationData parse(const std::string& msg) const;
 };

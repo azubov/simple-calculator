@@ -1,50 +1,34 @@
-#include "CachedCalculatorRepository.h"
-#include "Calculator.h"
-#include "CalculatorService.h"
-#include "Checker.h"
-#include "CpuHeavyCalculator.h"
+#include "Application.h"
 #include "Log.h"
-#include "PGConnection.h"
-#include "Parser.h"
-#include "PostgresCalculatorRepository.h"
-#include "Printer.h"
-#include "Runner.h"
-#include "SimpleCalculator.h"
-#include "StatementInitializer.h"
+#include "SystemSignal.h"
 
 #include <fmt/format.h>
 
-int main(int argc, char* argv[]) {
+#include <csignal>
+#include <thread>
+
+int main() {
     Log::setLogger(std::make_shared<SpdLogger>());
-
-    Parser parser;
-    Checker checker;
-    Printer printer;
-
     try {
-        PGConnection db_connection;
-        StatementInitializer::prepareCalculatorStatements(db_connection);
+        Log::info("Starting application..");
+        Application app;
+        SystemSignal sys_signal{{SIGTERM, SIGINT}, [&app] {
+                                    app.stop();
+                                }};
 
-        PostgresCalculatorRepository pg_repository(db_connection);
-        CachedCalculatorRepository cached_repository(pg_repository);
-        cached_repository.fillCacheFromRepository();
+        std::thread sig_thr(&SystemSignal::listen, &sys_signal);
+        std::thread wrk_thr(&Application::run, &app);
 
-#ifdef ENABLE_CPU_LOAD
-        SimpleCalculator simple_calculator;
-        CpuHeavyCalculator calculator(simple_calculator);
-#else
-        SimpleCalculator calculator;
-#endif
+        sys_signal.ready();
+        Log::info("Application started");
 
-        CalculatorService calculator_service(cached_repository, calculator);
-        Runner runner(parser, checker, calculator_service, printer);
+        sig_thr.join();
+        wrk_thr.join();
 
-        return runner.run(argc, argv);
     } catch (const std::exception& e) {
-        printer.printException(e);
-        Log::error("Runner finished with error");
         Log::error(fmt::format("Exception: {}", e.what()));
-
         return 1;
     }
+    Log::info("Application stopped");
+    return 0;
 }

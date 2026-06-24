@@ -11,8 +11,8 @@ TEST(ParserTests, ParsesValidBinaryOperation) {
         "second": 4
     })");
 
-    Parser parser(input);
-    OperationData data = parser.parse();
+    Parser parser;
+    OperationData data = parser.parse(input.str());
 
     EXPECT_EQ(data.first, 3);
     EXPECT_EQ(data.operation, '+');
@@ -26,8 +26,8 @@ TEST(ParserTests, ParsesUnaryOperationWithoutSecond) {
         "operation": "!"
     })");
 
-    Parser parser(input);
-    OperationData data = parser.parse();
+    Parser parser;
+    OperationData data = parser.parse(input.str());
 
     EXPECT_EQ(data.first, 5);
     EXPECT_EQ(data.operation, '!');
@@ -40,9 +40,9 @@ TEST(ParserTests, MissingFirstFieldThrows) {
         "second": 10
     })");
 
-    Parser parser(input);
+    Parser parser;
 
-    EXPECT_THROW(parser.parse(), std::invalid_argument);
+    EXPECT_THROW(parser.parse(input.str()), std::invalid_argument);
 }
 
 TEST(ParserTests, MissingOperationFieldThrows) {
@@ -51,9 +51,9 @@ TEST(ParserTests, MissingOperationFieldThrows) {
         "second": 20
     })");
 
-    Parser parser(input);
+    Parser parser;
 
-    EXPECT_THROW(parser.parse(), std::invalid_argument);
+    EXPECT_THROW(parser.parse(input.str()), std::invalid_argument);
 }
 
 TEST(ParserTests, OperationMustBeSingleCharacter) {
@@ -63,9 +63,9 @@ TEST(ParserTests, OperationMustBeSingleCharacter) {
         "second": 20
     })");
 
-    Parser parser(input);
+    Parser parser;
 
-    EXPECT_THROW(parser.parse(), std::invalid_argument);
+    EXPECT_THROW(parser.parse(input.str()), std::invalid_argument);
 }
 
 TEST(ParserTests, FirstMustBeInteger) {
@@ -75,20 +75,24 @@ TEST(ParserTests, FirstMustBeInteger) {
         "second": 20
     })");
 
-    Parser parser(input);
+    Parser parser;
 
-    EXPECT_THROW(parser.parse(), std::invalid_argument);
+    EXPECT_THROW(parser.parse(input.str()), std::invalid_argument);
 }
 
 TEST(ParserTests, SecondMustBeIntegerIfPresent) {
-
     std::stringstream input(R"({
         "first": 10,
         "operation": "+",
         "second": "abc"
     })");
 
-    Parser parser(input);
+    Parser parser;
 
-    EXPECT_THROW(parser.parse(), std::invalid_argument);
+    EXPECT_THROW(parser.parse(input.str()), std::invalid_argument);
+}
+
+TEST(ParserTests, InvalidJsonThrowsInvalidArgument) {
+    Parser parser;
+    EXPECT_THROW(parser.parse("{ invalid json }"), std::invalid_argument);
 }

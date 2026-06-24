@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+# Перечитываем unit-файлы
+systemctl daemon-reload
+
+# Включаем автозапуск при загрузке
+systemctl enable calculator.service
+
+# Запускаем сервис немедленно
+systemctl start calculator.service
+
+echo "calculator service started."

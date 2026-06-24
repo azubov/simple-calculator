@@ -2,13 +2,14 @@
 
 #include "Log.h"
 
-Printer::Printer(std::ostream& out, std::ostream& err) noexcept
+#include <fmt/format.h>
+
+Printer::Printer(std::ostringstream& out, std::ostringstream& err) noexcept
     : out_(out)
     , err_(err) {}
 
-void Printer::printHelp() const {
+void Printer::printHelp() {
     Log::debug("Printing help..");
-
     out_ << "This is a simple calculator!\n"
          << "It only supports integers as arguments.\n"
          << "Usage: calc arg1 operation arg2\n"
@@ -30,14 +31,21 @@ void Printer::printHelp() const {
          << "calc 4 ! -> 24\n";
 }
 
-void Printer::printResult(const OperationData& data) const {
-    Log::debug("Printing result..");
-
+void Printer::printResult(const OperationData& data) {
+    Log::debug(fmt::format("Printing result: {}", data.result));
     out_ << data.result << '\n';
 }
 
-void Printer::printException(const std::exception& ex) const {
-    Log::debug("Printing exception..");
+void Printer::printException(const std::exception& ex) {
+    Log::error(fmt::format("Printing: {}", ex.what()));
+    err_ << "Error: " << ex.what() << '\n';
+}
 
-    err_ << ex.what() << '\n';
+std::string Printer::flush() {
+    std::string result = out_.str() + err_.str();
+    out_.str("");
+    err_.str("");
+    out_.clear();
+    err_.clear();
+    return result;
 }

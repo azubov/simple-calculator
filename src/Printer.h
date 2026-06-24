@@ -3,18 +3,19 @@
 #include "OperationData.h"
 
 #include <exception>
-#include <iostream>
-#include <ostream>
+#include <sstream>
+#include <string>
 
 class Printer {
 public:
-    explicit Printer(std::ostream& out = std::cout, std::ostream& err = std::cerr) noexcept;
+    explicit Printer(std::ostringstream& out, std::ostringstream& err) noexcept;
 
-    void printHelp() const;
-    void printResult(const OperationData& data) const;
-    void printException(const std::exception& ex) const;
+    void printHelp();
+    void printResult(const OperationData& data);
+    void printException(const std::exception& ex);
+    std::string flush();
 
 private:
-    std::ostream& out_;
-    std::ostream& err_;
+    std::ostringstream& out_;
+    std::ostringstream& err_;
 };

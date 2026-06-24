@@ -32,10 +32,14 @@ void CalculatorService::calculate(OperationData& data) {
         saveWithStatus(data, OperationData::Status::success);
     } catch (const std::invalid_argument& e) {
         saveWithStatus(data, OperationData::Status::invalid_argument);
-        throw;
+        throw std::invalid_argument(
+            fmt::format("Operation has invalid_argument: {}", e.what())
+        );
     } catch (const std::overflow_error& e) {
         saveWithStatus(data, OperationData::Status::overflow_error);
-        throw;
+        throw std::overflow_error(
+            fmt::format("Operation has overflow_error: {}", e.what())
+        );
     }
 }
 

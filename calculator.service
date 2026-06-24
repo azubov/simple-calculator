@@ -1,0 +1,18 @@
+[Unit]
+Description=Simple Calculator Service
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/calc
+
+# Директория для логов создаётся автоматически systemd (см. ниже)
+Environment=CALC_LOG_PATH=/var/lib/calculator/calculator.log
+
+# systemd создаст /var/lib/calculator/ с нужными правами перед стартом
+LogsDirectory=calculator
+LogsDirectoryMode=0777
+
+[Install]
+WantedBy=multi-user.target
